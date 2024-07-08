@@ -1,0 +1,61 @@
+#Team Agreement
+
+
+* Communication method: Discord
+* Expected response time: 1-2 days
+* Nature and Frequency of meetings during development = Weekly/Biweekly
+* Contingency Plan: 
+   * Some teammate(s) not being able to complete their (scheduled?) task on time
+      * Message everyone in the Discord group chat
+      * Can ask to delegate task to others or ask for extension
+         * Case (i) Others can react to message with thumbs up if they can help take over
+            * Teammate can help take over their task in later weeks
+         * Case (ii) Give a heads up on X # of days of extension
+
+
+
+
+
+
+(Question: For the thumbs up part of case i, is this a better alternative for record keeping: the group member who is willing to help with the task can reply the message - “I can take over task XXX”)
+* Yeah. this is nice
+
+
+(Question: “Ideally, these meetings should occur daily, with a minimum requirement of three
+meetings per week.”)
+* Schedules -> https://www.when2meet.com/?25509463-qGl8p 
+
+
+
+
+________________
+Time- line:
+* Time left: (< 5 weeks left)
+* Ideal: 2-3 sprints, each <= 1.5 week
+
+
+Official start of Sprint 1: Monday, July 8th, 2024 
+
+
+Sprint 1: (Goal: Finish by 11:59 pm Wednesday, July 17, 2024)
+* Implement core functionality for the application => focus on the mandatory components, and try implementing the extra ones if there’s time
+   * Develop user authentication (sign-up, login, password reset).
+   * Implement main user interface and navigation.
+   * Set up database
+* Ensure each feature is integrated smoothly.
+* (Begin initial testing on implemented features
+   * Conduct basic integration tests to ensure components work together.
+   * Identify and document any integration issues)
+Sprint 2: (Goal: Finish by 11:59 pm Sunday, July 28th, 2024)
+* Conduct unit tests for individual components.
+* Identify and fix bugs
+* Ensure application stability and performance
+* Perform integration tests to ensure all components work seamlessly.
+* Optimize code for performance improvements.
+* Ensure efficient database queries and data handling
+* (Add any new features or enhancements based on feedback and testing)
+Sprint 3: (Goal: Finish by 11:59 Sunday, August 4th, 2024)
+* Conduct final round of testing.
+* Implement additional features or enhancements based on feedback
+* Record a 5-10 minute video demonstrating the usage of application
+Due date: August 7th, 2024
