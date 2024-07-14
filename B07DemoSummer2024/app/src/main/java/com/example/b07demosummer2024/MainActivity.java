@@ -10,6 +10,7 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.util.Log;
 import android.widget.Button;
 import android.view.View;
 import android.content.Intent;
@@ -26,15 +27,34 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        db = FirebaseDatabase.getInstance("https://b07-demo-summer-2024-default-rtdb.firebaseio.com/");
+        db = FirebaseDatabase.getInstance("https://b07-project-c1ef0-default-rtdb.firebaseio.com/");
         DatabaseReference myRef = db.getReference("testDemo");
 
-//        myRef.setValue("B07 Demo!");
+//      myRef.setValue("B07 Demo!");
         myRef.child("movies").setValue("B07 Demo!");
+
+        Button sendDataButton = findViewById(R.id.sendDataButton);
+        sendDataButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("TAG", "DID THIS GET REACHED? Yes, yes it did");
+                sendDataToFirebase(myRef);
+            }
+        });
 
         if (savedInstanceState == null) {
             loadFragment(new HomeFragment());
         }
+    }
+
+    private void sendDataToFirebase(DatabaseReference myRef) {
+        myRef.child("newData").setValue("Hello, Firebase!").addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                Log.d("Firebase", "Data written successfully");
+            } else {
+                Log.e("Firebase", "Error writing data");
+            }
+        });
     }
 
     private void loadFragment(Fragment fragment) {
