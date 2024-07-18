@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="8dp">
+
+    <TextView
+        android:id="@+id/textViewName"
+        android:layout_width="213dp"
+        android:layout_height="26dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="3dp"
+        android:text="Name"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewLotNum"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="Lot #"
+        app:layout_constraintEnd_toEndOf="@id/textViewName"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textViewName" />
+
+    <TextView
+        android:id="@+id/textViewPeriod"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="Period"
+        app:layout_constraintEnd_toEndOf="@id/textViewName"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewLotNum" />
+
+    <TextView
+        android:id="@+id/textViewCategory"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="Category"
+        app:layout_constraintEnd_toEndOf="@id/textViewName"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewPeriod" />
+
+    <TextView
+        android:id="@+id/textViewDescription"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="20dp"
+        android:text="Description"
+        app:layout_constraintEnd_toEndOf="@id/textViewName"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewPeriod" />
+
+    <RadioButton
+        android:id="@+id/radioButtonSelect"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="2dp"
+        android:scaleX=".8"
+        android:scaleY=".8"
+        android:textSize="10sp"
+        app:layout_constraintEnd_toStartOf="@id/textViewName"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <FrameLayout
+        android:layout_width="139dp"
+        android:layout_height="102dp"
+        tools:layout_editor_absoluteX="255dp"
+        tools:layout_editor_absoluteY="4dp">
+
+        <ImageView
+            android:id="@+id/imageViewImage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:srcCompat="@tools:sample/avatars" />
+
+        <VideoView
+            android:id="@+id/videoViewVideo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </FrameLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
