@@ -15,7 +15,6 @@
 
         <activity android:name=".LoginActivity" android:exported="false" />
         <activity android:name=".AddActivity" android:exported="false" />
-        <activity android:name=".RemoveActivity" android:exported="false" />
         <activity android:name=".SearchActivity" android:exported="false" />
         <activity android:name=".ReportActivity" android:exported="false" />
 
