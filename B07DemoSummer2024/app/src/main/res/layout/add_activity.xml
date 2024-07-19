@@ -93,7 +93,7 @@
             app:layout_constraintHorizontal_bias="0.113"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.272" />
+            app:layout_constraintVertical_bias="0.271" />
 
         <TextView
             android:id="@+id/categoryTextView"
@@ -103,7 +103,7 @@
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.118"
+            app:layout_constraintHorizontal_bias="0.121"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.356" />
@@ -129,10 +129,10 @@
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.128"
+            app:layout_constraintHorizontal_bias="0.129"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.502" />
+            app:layout_constraintVertical_bias="0.516" />
 
         <TextView
             android:id="@+id/pictureVideoTextView"
@@ -142,10 +142,10 @@
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.133"
+            app:layout_constraintHorizontal_bias="0.136"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.788" />
+            app:layout_constraintVertical_bias="0.784" />
 
         <EditText
             android:id="@+id/lotNumberEditText"
@@ -190,7 +190,7 @@
             app:layout_constraintVertical_bias="0.432" />
 
         <EditText
-            android:id="@+id/descriptionEditTextTextMultiLine"
+            android:id="@+id/descriptionEditText"
             android:layout_width="203dp"
             android:layout_height="164dp"
             android:ems="10"
