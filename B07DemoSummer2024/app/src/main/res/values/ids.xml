@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="myRectangleView" type="id">RectangleView</item>
+    <item name="etback" type="id">Back</item>
+    <item name="etTAAM" type="id">TAAM</item>
+    <item name="etUsername" type="id">Username</item>
+    <item name="btnLogin" type="id">Login</item>
+    <item name="etPassword" type="id">Password</item>
+</resources>
