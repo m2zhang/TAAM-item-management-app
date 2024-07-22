@@ -30,7 +30,7 @@ public class AddActivityFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.add_activity, container, false);
 
-        db = FirebaseDatabase.getInstance();
+        db = FirebaseDatabase.getInstance("https://b07-project-c1ef0-default-rtdb.firebaseio.com/");
 
         lotNumberEditText = view.findViewById(R.id.lotNumberEditText);
         nameEditText = view.findViewById(R.id.nameEditText);
@@ -54,6 +54,18 @@ public class AddActivityFragment extends Fragment {
     }
 
     private void addItem(){
+        String lotNumber = lotNumberEditText.getText().toString().trim();
+        String name = nameEditText.getText().toString().trim();
+        String category = categoryEditText.getText().toString().trim();
+        String period = periodEditText.getText().toString().trim();
+        String description = descriptionEditText.getText().toString().trim();
+
+        if (lotNumber.isEmpty() || name.isEmpty() || category.isEmpty() || period.isEmpty()
+                || description.isEmpty()){
+            //need to add some notification there
+            return;
+        }
+
 
     }
 }
