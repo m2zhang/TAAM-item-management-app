@@ -176,20 +176,6 @@
             app:layout_constraintVertical_bias="0.267" />
 
         <EditText
-            android:id="@+id/periodEditText"
-            android:layout_width="203dp"
-            android:layout_height="41dp"
-            android:ems="10"
-            android:inputType="text"
-            android:text="Enter Period"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.771"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.432" />
-
-        <EditText
             android:id="@+id/descriptionEditText"
             android:layout_width="203dp"
             android:layout_height="164dp"
@@ -202,20 +188,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.648" />
-
-        <EditText
-            android:id="@+id/categoryEditText"
-            android:layout_width="203dp"
-            android:layout_height="41dp"
-            android:ems="10"
-            android:inputType="text"
-            android:text="Enter Category"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.771"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.353" />
 
         <ImageView
             android:id="@+id/imageView"
@@ -252,6 +224,30 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.908" />
+
+        <Spinner
+            android:id="@+id/categorySpinner"
+            android:layout_width="203dp"
+            android:layout_height="41dp"
+            android:entries="@array/category_array"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.771"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.349" />
+
+        <Spinner
+            android:id="@+id/periodSpinner"
+            android:layout_width="203dp"
+            android:layout_height="41dp"
+            android:entries="@array/period_array"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.771"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.432" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

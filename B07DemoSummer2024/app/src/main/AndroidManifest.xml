@@ -18,6 +18,7 @@
         <activity android:name=".SearchActivity" android:exported="false" />
         <activity android:name=".ReportActivity" android:exported="false" />
 
+
         <activity
             android:name=".MainActivity"
             android:exported="true">
