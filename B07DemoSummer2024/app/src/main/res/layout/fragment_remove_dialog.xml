@@ -110,7 +110,8 @@
                 android:background="@drawable/rounded_button"
                 android:text="Yes"
                 android:textColor="#FFFFFF"
-                android:textAllCaps="false" />
+                android:textAllCaps="false"
+                android:cornerRadius="8dp" />
 
             <Button
                 android:id="@+id/buttonCancel"
@@ -121,7 +122,8 @@
                 android:background="@drawable/rounded_button"
                 android:text="Cancel"
                 android:textColor="#FFFFFF"
-                android:textAllCaps="false" />
+                android:textAllCaps="false"
+                android:cornerRadius="8dp" />
         </LinearLayout>
 
     </LinearLayout>
