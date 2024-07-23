@@ -43,7 +43,13 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
         holder.textViewPeriod.setText(item.getPeriod());
         holder.textViewDescription.setText(item.getDescription());
 
+        // Testing with some default pictures first
+
+        holder.imageViewPicture.setImageResource(R.drawable.default_image); // Replace with your default image resource
+        holder.videoViewVideo.setVisibility(View.GONE);
+
         // Load image
+        /*
         new Thread(() -> {
             try {
                 InputStream inputStream = new URL(item.getPicture()).openStream();
@@ -61,6 +67,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
             mp.setLooping(true);
             holder.videoViewVideo.start();
         });
+         */
     }
 
     @Override
@@ -78,9 +85,10 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
             textViewName = itemView.findViewById(R.id.textViewName);
             textViewCategory = itemView.findViewById(R.id.textViewCategory);
             textViewPeriod = itemView.findViewById(R.id.textViewPeriod);
+            textViewDescription = itemView.findViewById(R.id.textViewDescription);
+
             imageViewPicture = itemView.findViewById(R.id.imageViewImage);
             videoViewVideo = itemView.findViewById(R.id.videoViewVideo);
-            textViewDescription = itemView.findViewById(R.id.textViewDescription);
         }
     }
 }

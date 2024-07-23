@@ -3,6 +3,7 @@ package com.example.b07demosummer2024;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -29,6 +30,7 @@ public class HomeFragment extends Fragment {
     private FirebaseDatabase db;
     private DatabaseReference itemsRef;
 
+    @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -36,7 +38,7 @@ public class HomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.activity_home_fragment, container, false);
 
         // Set up the RecyclerView
-        RecyclerView recyclerView = view.findViewById(R.id.recycler_view);
+        recyclerView = view.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         // Initialize and set the adapter for RecyclerView here
         itemList = new ArrayList<>();
@@ -44,13 +46,14 @@ public class HomeFragment extends Fragment {
         recyclerView.setAdapter(itemAdapter);
 
         db = FirebaseDatabase.getInstance("https://b07-project-c1ef0-default-rtdb.firebaseio.com/");
+        itemsRef = db.getReference("Items");
 
+        fetchItemsFromDatabase();
 
         return view;
     }
 
-    private void fetchItemsFromDatabase(String category) {
-        itemsRef = db.getReference("Items/" + category);
+    private void fetchItemsFromDatabase() {
         itemsRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

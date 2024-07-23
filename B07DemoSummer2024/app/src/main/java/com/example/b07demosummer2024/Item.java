@@ -9,6 +9,10 @@ public class Item {
     private String picture;
     private String video;
 
+    public Item() {
+        // Default constructor required for calls to DataSnapshot.getValue(Item.class)
+    }
+
     // Just make whichever parts null if not included (e.g. for video and/or picture)
     public Item(int lotNumber, String name, String category, String period, String description, String picture, String video) {
         this.lotNumber = lotNumber;
