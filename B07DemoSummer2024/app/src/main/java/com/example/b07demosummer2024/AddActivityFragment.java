@@ -32,7 +32,6 @@ import com.google.firebase.storage.UploadTask;
 public class AddActivityFragment extends Fragment {
     private EditText lotNumberEditText, nameEditText, descriptionEditText;
     private Spinner categorySpinner, periodSpinner;
-    // haven't fix the button for uploading pictures
     private Button submitButton, cancelButton, selectImageVideoButton;
     private Uri imageVideo;
     private FirebaseDatabase db;
@@ -66,19 +65,14 @@ public class AddActivityFragment extends Fragment {
                 R.array.category_array, android.R.layout.simple_spinner_item);
         categoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         categorySpinner.setAdapter(categoryAdapter);
+        categorySpinner.setSelection(0);
 
         //set up periodSpinner
         ArrayAdapter<CharSequence> periodAdapter = ArrayAdapter.createFromResource(getContext(),
                 R.array.period_array, android.R.layout.simple_spinner_item);
         periodAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         periodSpinner.setAdapter(periodAdapter);
-
-        //follow the requirements - visit the TAAM requirements
-        //update the xml files for the dropdown menus - done
-        //add category - done
-        //traverse the lot number to check duplications - technical issues
-        //add the image/videos function
-        //submit button
+        periodSpinner.setSelection(0);
 
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,14 +84,15 @@ public class AddActivityFragment extends Fragment {
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // need to return the screen
+                getParentFragmentManager().popBackStack();
             }
         });
 
         selectImageVideoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //function for calling the image
+                selectMedia();
+                resetInformation();
             }
         });
 
@@ -114,18 +109,24 @@ public class AddActivityFragment extends Fragment {
         UploadTask uploadTask;
 
         final boolean[] uploadSucceed = {true};
+        final boolean[] lotNumberExistStatus = {false};
 
+        //check if all of the fields are filled in
         if (lotNumber.isEmpty() || name.isEmpty() || category.isEmpty() || period.isEmpty()
                 || description.isEmpty() || imageVideo == null){
-            //need to add some notification there
+            Toast.makeText(getContext(), "Please fill in all information",
+                    Toast.LENGTH_SHORT).show();
             return;
         }
 
-        checkLotNumberExist(lotNumber);
-        /*
-         * Need to fix the case if lotNumber has been used already
-         * Assume lotNumber is not repeated
-         */
+        //check whether the lot number is reused
+        if (checkLotNumberExist(lotNumber, lotNumberExistStatus)){
+            Toast.makeText(getContext(), "This lot number already exist",
+                    Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        //upload image to firebase storage
         imageVideoReference = storageReference.child(imageVideo.getLastPathSegment());
         uploadTask = imageVideoReference.putFile(imageVideo);
         uploadTask.addOnFailureListener(new OnFailureListener() {
@@ -135,10 +136,12 @@ public class AddActivityFragment extends Fragment {
             }
         });
         if (!uploadSucceed[0]) {
-            // add a toast to tell that the upload failed, abort the process
+            Toast.makeText(getContext(), "Image/Video upload failed. Process aborted",
+                    Toast.LENGTH_SHORT).show();
             return;
         }
 
+        //create a new item to store input information into firebase
         itemsReference = db.getReference("Items");
         String id = itemsReference.push().getKey();
         if (id == null){
@@ -157,31 +160,30 @@ public class AddActivityFragment extends Fragment {
                     }
                 }
         );
-        imageVideo = null;
     }
 
-    private void checkLotNumberExist(String lotNumber) {
+    private boolean checkLotNumberExist(String lotNumber, final boolean[] lotNumberExistStatus) {
         ValueEventListener dbListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                boolean lotNumberExistStatus = false;
                 for (DataSnapshot itemSnapshot : snapshot.getChildren()){
                     String itemLotNumber = snapshot.child("lotNumber").getValue(String.class);
                     if (lotNumber.equals(itemLotNumber)) {
                         Toast.makeText(getContext(), "This lot number has been used",
                                 Toast.LENGTH_SHORT).show();
-                        lotNumberExistStatus = true;
+                        lotNumberExistStatus[0] = true;
                         break;
                     }
                 }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 Toast.makeText(getContext(), "Database error", Toast.LENGTH_SHORT).show();
             }
         };
+        lotNumberExistStatus[0] = false;
         itemsReference.addListenerForSingleValueEvent(dbListener);
+        return lotNumberExistStatus[0];
     }
 
     private void selectMedia() {
@@ -192,8 +194,6 @@ public class AddActivityFragment extends Fragment {
                         imageVideo = uri;
                         Toast.makeText(getContext(), "Image/Video Selected: " + uri,
                                 Toast.LENGTH_SHORT).show();
-                        //and then i need to save the uri to somewhere else
-
                     }
                     else {
                         //Log.d("Image/Video Picker", "No Image/Video Selected"); for debugging
@@ -205,6 +205,13 @@ public class AddActivityFragment extends Fragment {
         pickImageVideo.launch(new PickVisualMediaRequest.Builder()
                 .setMediaType(PickVisualMedia.ImageAndVideo.INSTANCE)
                 .build());
+    }
 
+    private void resetInformation() {
+        lotNumberEditText.setText("");
+        nameEditText.setText("");
+        categorySpinner.setSelection(0);
+        periodSpinner.setSelection(0);
+        imageVideo = null;
     }
 }
