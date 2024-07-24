@@ -8,6 +8,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,7 +48,6 @@ public class HomeFragment extends Fragment {
         recyclerView.setAdapter(itemAdapter);
 
         db = FirebaseDatabase.getInstance("https://b07-project-c1ef0-default-rtdb.firebaseio.com/");
-        itemsRef = db.getReference("Items");
 
         fetchItemsFromDatabase();
 
@@ -54,12 +55,15 @@ public class HomeFragment extends Fragment {
     }
 
     private void fetchItemsFromDatabase() {
+        itemsRef = db.getReference("Items");
         itemsRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 itemList.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    Log.i("Database", "Processing snapshot: " + snapshot.getKey());
                     Item item = snapshot.getValue(Item.class);
+                    Log.i("Item", item.getName());
                     itemList.add(item);
                 }
                 itemAdapter.notifyDataSetChanged();
