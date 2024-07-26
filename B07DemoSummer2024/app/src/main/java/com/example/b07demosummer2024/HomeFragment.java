@@ -70,6 +70,8 @@ public class HomeFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 itemList.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    Log.i("!!! Testing", "did it reach here?");
+
                     //Log.i("Database", "Processing snapshot: " + snapshot.getKey());
                     Item item = snapshot.getValue(Item.class);
                     //Log.i("Item picture", item.getPicture());

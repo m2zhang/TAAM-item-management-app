@@ -4,6 +4,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 import java.io.InputStream;
@@ -23,6 +24,7 @@ import java.util.List;
 
 public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder> {
     private List<Item> itemList;
+    private int selectedPosition = -1; // No selection by default
 
     public ItemAdapter(List<Item> itemList) {
         this.itemList = itemList;
@@ -32,7 +34,6 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
     @Override
     public ItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_layout, parent, false);
-        Log.i("Test onCreateViewHolder", "Did it work?");
         return new ItemViewHolder(view);
     }
 
@@ -44,8 +45,18 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
         holder.textViewCategory.setText(item.getCategory());
         holder.textViewPeriod.setText(item.getPeriod());
         holder.textViewDescription.setText(item.getDescription());
-        Log.i("Item Adapter for Name: plzzz work ", item.getName());
-        // Testing with some default pictures first
+
+        holder.radioButtonSelect.setChecked(position == selectedPosition);
+        holder.radioButtonSelect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Update the selected position
+                selectedPosition = holder.getAdapterPosition();
+                // Notify the adapter to refresh the list
+                notifyDataSetChanged();
+            }
+        });
+
 
         holder.imageViewPicture.setImageResource(R.drawable.default_image); // Replace with your default image resource
         holder.videoViewVideo.setVisibility(View.GONE);
@@ -81,6 +92,8 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
         TextView textViewLotNumber, textViewName, textViewCategory, textViewPeriod, textViewDescription;
         ImageView imageViewPicture;
         VideoView videoViewVideo;
+        RadioButton radioButtonSelect;
+
         public ItemViewHolder(@NonNull View itemView) {
             super(itemView);
             textViewLotNumber = itemView.findViewById(R.id.textViewLotNum);
@@ -91,6 +104,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
 
             imageViewPicture = itemView.findViewById(R.id.imageViewImage);
             videoViewVideo = itemView.findViewById(R.id.videoViewVideo);
+            radioButtonSelect = itemView.findViewById(R.id.radioButtonSelect);
 
         }
     }
