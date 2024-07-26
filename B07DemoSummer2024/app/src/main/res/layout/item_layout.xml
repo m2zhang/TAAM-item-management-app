@@ -76,21 +76,24 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <FrameLayout
-        android:layout_width="139dp"
-        android:layout_height="102dp"
-        tools:layout_editor_absoluteX="255dp"
-        tools:layout_editor_absoluteY="4dp">
+        android:layout_width="108dp"
+        android:layout_height="80dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/textViewName"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="4dp">
 
         <ImageView
             android:id="@+id/imageViewImage"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="105dp"
+            android:layout_height="79dp"
             tools:srcCompat="@tools:sample/avatars" />
 
         <VideoView
             android:id="@+id/videoViewVideo"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_width="105dp"
+            android:layout_height="79dp" />
     </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
