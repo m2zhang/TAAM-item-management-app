@@ -19,9 +19,9 @@
     <!-- RecyclerView -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:padding="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="5dp"
         app:layout_constraintTop_toBottomOf="@id/fragment_nav_bar"
         app:layout_constraintBottom_toTopOf="@id/fragment_page_nav"
         app:layout_constraintStart_toStartOf="parent"

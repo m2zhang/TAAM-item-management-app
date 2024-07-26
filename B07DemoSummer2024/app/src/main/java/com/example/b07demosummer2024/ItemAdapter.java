@@ -1,5 +1,6 @@
 package com.example.b07demosummer2024;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,18 +32,19 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
     @Override
     public ItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_layout, parent, false);
+        Log.i("Test onCreateViewHolder", "Did it work?");
         return new ItemViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ItemViewHolder holder, int position) {
         Item item = itemList.get(position);
-        holder.textViewLotNumber.setText(item.getLotNumber());
+        holder.textViewLotNumber.setText(String.valueOf(item.getLotNumber()));
         holder.textViewName.setText(item.getName());
         holder.textViewCategory.setText(item.getCategory());
         holder.textViewPeriod.setText(item.getPeriod());
         holder.textViewDescription.setText(item.getDescription());
-
+        Log.i("Item Adapter for Name: plzzz work ", item.getName());
         // Testing with some default pictures first
 
         holder.imageViewPicture.setImageResource(R.drawable.default_image); // Replace with your default image resource
@@ -89,6 +91,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
 
             imageViewPicture = itemView.findViewById(R.id.imageViewImage);
             videoViewVideo = itemView.findViewById(R.id.videoViewVideo);
+
         }
     }
 }
