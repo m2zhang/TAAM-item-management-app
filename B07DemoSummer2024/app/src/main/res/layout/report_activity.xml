@@ -69,9 +69,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
-        android:layout_marginEnd="52dp"
         android:text="Generate the report by \n lot number:"
-        app:layout_constraintEnd_toStartOf="@+id/editTextText"
         app:layout_constraintStart_toStartOf="parent"
         tools:layout_editor_absoluteY="152dp" />
 
@@ -80,9 +78,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Submit"
-        app:layout_constraintBottom_toBottomOf="@+id/editTextText"
-        app:layout_constraintTop_toTopOf="@+id/editTextText"
-        tools:layout_editor_absoluteX="312dp" />
+        tools:layout_editor_absoluteX="239dp"
+        tools:layout_editor_absoluteY="586dp" />
 
     <Button
         android:id="@+id/submitButton"
@@ -114,6 +111,14 @@
         android:layout_height="wrap_content"
         android:text="Submit"
         tools:layout_editor_absoluteX="312dp"
+        tools:layout_editor_absoluteY="140dp" />
+
+    <Button
+        android:id="@+id/submitButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Submit"
+        tools:layout_editor_absoluteX="312dp"
         tools:layout_editor_absoluteY="391dp" />
 
     <Button
@@ -129,16 +134,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Submit"
-        tools:layout_editor_absoluteX="312dp"
+        tools:layout_editor_absoluteX="239dp"
         tools:layout_editor_absoluteY="517dp" />
-
-    <Button
-        android:id="@+id/submitButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Submit"
-        tools:layout_editor_absoluteX="312dp"
-        tools:layout_editor_absoluteY="577dp" />
 
     <TextView
         android:id="@+id/textView2"
@@ -265,23 +262,5 @@
         android:inputType="text"
         tools:layout_editor_absoluteX="195dp"
         tools:layout_editor_absoluteY="457dp" />
-
-    <EditText
-        android:id="@+id/editTextText"
-        android:layout_width="89dp"
-        android:layout_height="32dp"
-        android:ems="10"
-        android:inputType="text"
-        tools:layout_editor_absoluteX="195dp"
-        tools:layout_editor_absoluteY="521dp" />
-
-    <EditText
-        android:id="@+id/editTextText"
-        android:layout_width="89dp"
-        android:layout_height="32dp"
-        android:ems="10"
-        android:inputType="text"
-        tools:layout_editor_absoluteX="195dp"
-        tools:layout_editor_absoluteY="593dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
