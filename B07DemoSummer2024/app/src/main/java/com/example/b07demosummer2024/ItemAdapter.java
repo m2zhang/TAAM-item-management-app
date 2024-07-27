@@ -25,9 +25,11 @@ import java.util.List;
 public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder> {
     private List<Item> itemList;
     private int selectedPosition = -1; // No selection by default
+    private OnItemSelectedListener onItemSelectedListener;
 
-    public ItemAdapter(List<Item> itemList) {
+    public ItemAdapter(List<Item> itemList, OnItemSelectedListener onItemSelectedListener) {
         this.itemList = itemList;
+        this.onItemSelectedListener = onItemSelectedListener;
     }
 
     @NonNull
@@ -54,6 +56,9 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
                 selectedPosition = holder.getAdapterPosition();
                 // Notify the adapter to refresh the list
                 notifyDataSetChanged();
+                if (onItemSelectedListener != null) {
+                    onItemSelectedListener.onItemSelected(item);
+                }
             }
         });
 
@@ -86,6 +91,14 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
     @Override
     public int getItemCount() {
         return itemList.size();
+    }
+
+    public int getSelectedPosition() {
+        return selectedPosition;
+    }
+
+    public Item getItem(int position) {
+        return itemList.get(position);
     }
 
     public static class ItemViewHolder extends RecyclerView.ViewHolder {

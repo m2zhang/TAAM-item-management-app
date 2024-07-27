@@ -9,12 +9,14 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.widget.ProgressBar;
+import android.widget.Button;
 
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -25,12 +27,13 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements OnItemSelectedListener {
 
     private RecyclerView recyclerView;
     private ItemAdapter itemAdapter;
     private List<Item> itemList;
     private ProgressBar progressBar;
+    private Item selectedItem;
 
     private FirebaseDatabase db;
     private DatabaseReference itemsRef;
@@ -42,12 +45,14 @@ public class HomeFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.activity_home_fragment, container, false);
 
+        Button buttonRemoveItem = view.findViewById(R.id.buttonRemove);
+
         // Set up the RecyclerView
         recyclerView = view.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         // Initialize and set the adapter for RecyclerView here
         itemList = new ArrayList<>();
-        itemAdapter = new ItemAdapter(itemList);
+        itemAdapter = new ItemAdapter(itemList, this);
 
         recyclerView.setAdapter(itemAdapter);
 
@@ -57,7 +62,29 @@ public class HomeFragment extends Fragment {
 
         fetchItemsFromDatabase();
 
+        buttonRemoveItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int selectedPosition = itemAdapter.getSelectedPosition();
+                if (selectedPosition != -1) {
+                    Item selectedItem = itemAdapter.getItem(selectedPosition);
+                    int lotNumber = selectedItem.getLotNumber();
+                    RemoveItemFragment removeItemFragment = RemoveItemFragment.newInstance(lotNumber);
+                    getParentFragmentManager().beginTransaction()
+                            .replace(R.id.fragment_container, removeItemFragment) // ??
+                            .addToBackStack(null)
+                            .commit();
+                }
+            }
+        });
+
+
         return view;
+    }
+
+    @Override
+    public void onItemSelected(Item item) {
+        selectedItem = item;
     }
 
     private void fetchItemsFromDatabase() {
@@ -70,8 +97,6 @@ public class HomeFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 itemList.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    Log.i("!!! Testing", "did it reach here?");
-
                     //Log.i("Database", "Processing snapshot: " + snapshot.getKey());
                     Item item = snapshot.getValue(Item.class);
                     //Log.i("Item picture", item.getPicture());
