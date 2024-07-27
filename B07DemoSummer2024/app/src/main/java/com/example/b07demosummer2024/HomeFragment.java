@@ -50,7 +50,7 @@ public class HomeFragment extends Fragment implements OnItemSelectedListener {
         // Set up the RecyclerView
         recyclerView = view.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        // Initialize and set the adapter for RecyclerView here
+        // Initialize and set the adapter for RecyclerView
         itemList = new ArrayList<>();
         itemAdapter = new ItemAdapter(itemList, this);
 
@@ -69,7 +69,14 @@ public class HomeFragment extends Fragment implements OnItemSelectedListener {
                 if (selectedPosition != -1) {
                     Item selectedItem = itemAdapter.getItem(selectedPosition);
                     int lotNumber = selectedItem.getLotNumber();
-                    RemoveItemFragment removeItemFragment = RemoveItemFragment.newInstance(lotNumber);
+                    String name = selectedItem.getName();
+                    String category = selectedItem.getCategory();
+                    String period = selectedItem.getPeriod();
+                    String description = selectedItem.getDescription();
+                    String picture = selectedItem.getPicture();
+                    String video = selectedItem.getVideo();
+
+                    RemoveItemFragment removeItemFragment = RemoveItemFragment.newInstance(lotNumber, name, category, period, description, picture, video);
                     getParentFragmentManager().beginTransaction()
                             .replace(R.id.fragment_container, removeItemFragment) // ??
                             .addToBackStack(null)

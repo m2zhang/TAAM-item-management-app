@@ -26,16 +26,32 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.io.Serializable;
 
 public class RemoveItemFragment extends Fragment {
-    private FirebaseDatabase db;
-    private DatabaseReference itemsRef;
+    private static final String ARG_LOT_NUMBER = "LotNumber";
+    private static final String ARG_NAME = "Name";
+    private static final String ARG_CATEGORY = "Category";
+    private static final String ARG_PERIOD = "Period";
+    private static final String ARG_DESCRIPTION = "Description";
+    private static final String ARG_PICTURE = "Picture";
+    private static final String ARG_VIDEO = "Video";
 
-    private static final String ARG_LOT_NUMBER = "ARG_LOT_NUMBER";
     private int LotNumber;
+    private String Name;
+    private String Category;
+    private String Period;
+    private String Description;
+    private String Picture;
+    private String Video;
 
-    public static RemoveItemFragment newInstance(int LotNumber) {
+    public static RemoveItemFragment newInstance(int LotNumber, String Name, String Category, String Period, String Description, String Picture, String Video) {
         RemoveItemFragment fragment = new RemoveItemFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_LOT_NUMBER, LotNumber);
+        args.putString(ARG_NAME, Name);
+        args.putString(ARG_CATEGORY, Category);
+        args.putString(ARG_PERIOD, Period);
+        args.putString(ARG_DESCRIPTION, Description);
+        args.putString(ARG_PICTURE, Picture);
+        args.putString(ARG_VIDEO, Video);
         fragment.setArguments(args);
         return fragment;
     }
@@ -47,7 +63,12 @@ public class RemoveItemFragment extends Fragment {
 
         if (getArguments() != null) {
             LotNumber = getArguments().getInt(ARG_LOT_NUMBER);
-        }
+            Name = getArguments().getString(ARG_NAME);
+            Category = getArguments().getString(ARG_CATEGORY);
+            Period = getArguments().getString(ARG_PERIOD);
+            Description = getArguments().getString(ARG_DESCRIPTION);
+            Picture = getArguments().getString(ARG_PICTURE);
+            Video = getArguments().getString(ARG_VIDEO);        }
 
         TextView textViewName2 = view.findViewById(R.id.textViewName2);
         TextView textViewLotNum2 = view.findViewById(R.id.textViewLotNum2);
@@ -58,6 +79,12 @@ public class RemoveItemFragment extends Fragment {
         VideoView videoViewVideo = view.findViewById(R.id.videoView);
 
         // Display item details if needed
+        textViewName2.setText(Name);
+        textViewLotNum2.setText(String.valueOf(LotNumber));
+        textViewPeriod2.setText(Period);
+        textCategory2.setText(Category);
+        textViewDescription2.setText(Description);
+
         // displayItemDetails(lotNumber, textViewName2, textViewLotNum2, textViewPeriod2, textCategory2, textViewDescription2, imageViewPicture, videoViewVideo);
 
         Button buttonYes = view.findViewById(R.id.buttonYes);
@@ -80,9 +107,10 @@ public class RemoveItemFragment extends Fragment {
         Query query = ref.child("Items").orderByChild("LotNumber").equalTo(LotNumber);
 
         query.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                if (dataSnapshot.exists()) {
+                    // There should be only one child
+                    DataSnapshot snapshot = dataSnapshot.getChildren().iterator().next();
                     snapshot.getRef().removeValue();
                 }
             }
