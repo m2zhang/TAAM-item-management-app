@@ -111,7 +111,7 @@
                 android:text="Yes"
                 android:textColor="#FFFFFF"
                 android:textAllCaps="false"
-                android:cornerRadius="8dp" />
+                />
 
             <Button
                 android:id="@+id/buttonCancel"
@@ -123,7 +123,7 @@
                 android:text="Cancel"
                 android:textColor="#FFFFFF"
                 android:textAllCaps="false"
-                android:cornerRadius="8dp" />
+                />
         </LinearLayout>
 
     </LinearLayout>

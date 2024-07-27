@@ -12,19 +12,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class MainActivity extends AppCompatActivity {
-    //FirebaseDatabase db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-//       Example of using the Firebase Database
-//        db = FirebaseDatabase.getInstance("https://b07-demo-summer-2024-default-rtdb.firebaseio.com/");
-//        DatabaseReference myRef = db.getReference("testDemo");
-//
-////        myRef.setValue("B07 Demo!");
-//        myRef.child("movies").setValue("B07 Demo!");
 
         // Find the search button
         Button buttonSearch = findViewById(R.id.buttonSearch);
