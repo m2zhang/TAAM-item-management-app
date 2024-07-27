@@ -8,6 +8,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.widget.Button;
 import android.widget.ProgressBar;
 
 
@@ -32,6 +34,8 @@ public class HomeFragment extends Fragment {
     private List<Item> itemList;
     private ProgressBar progressBar;
 
+    private Button buttonHome;
+
     private FirebaseDatabase db;
     private DatabaseReference itemsRef;
 
@@ -53,9 +57,21 @@ public class HomeFragment extends Fragment {
 
         progressBar = view.findViewById(R.id.progress_bar);
 
+        buttonHome = view.findViewById(R.id.buttonHome);
+
         db = FirebaseDatabase.getInstance("https://b07-project-c1ef0-default-rtdb.firebaseio.com/");
 
         fetchItemsFromDatabase();
+
+        // Home button functionality
+        buttonHome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (savedInstanceState == null) {
+                    loadFragment(new HomeFragment());
+                }
+            }
+        });
 
         return view;
     }
