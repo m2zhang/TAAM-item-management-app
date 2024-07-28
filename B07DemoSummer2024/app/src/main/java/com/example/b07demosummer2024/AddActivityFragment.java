@@ -19,6 +19,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -46,7 +47,7 @@ public class AddActivityFragment extends Fragment {
         View view = inflater.inflate(R.layout.add_activity, container, false);
 
         db = FirebaseDatabase.getInstance("https://b07-project-c1ef0-default-rtdb.firebaseio.com/");
-        itemsReference = FirebaseDatabase.getInstance().getReference("Items");
+        itemsReference = db.getReference("Items");
         storage = FirebaseStorage.getInstance("gs://b07-project-c1ef0.appspot.com");
         storageReference = storage.getReference();
 
@@ -92,10 +93,8 @@ public class AddActivityFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 selectMedia();
-                resetInformation();
             }
         });
-
         return view;
     }
 
@@ -105,11 +104,6 @@ public class AddActivityFragment extends Fragment {
         String category = categorySpinner.getSelectedItem().toString().trim();
         String period = periodSpinner.getSelectedItem().toString().trim();
         String description = descriptionEditText.getText().toString().trim();
-        StorageReference imageVideoReference;
-        UploadTask uploadTask;
-
-        final boolean[] uploadSucceed = {true};
-        final boolean[] lotNumberExistStatus = {false};
 
         //check if all of the fields are filled in
         if (lotNumber.isEmpty() || name.isEmpty() || category.isEmpty() || period.isEmpty()
@@ -120,70 +114,93 @@ public class AddActivityFragment extends Fragment {
         }
 
         //check whether the lot number is reused
-        if (checkLotNumberExist(lotNumber, lotNumberExistStatus)){
-            Toast.makeText(getContext(), "This lot number already exist",
-                    Toast.LENGTH_SHORT).show();
-            return;
-        }
+        checkLotNumberExist(lotNumber, (lotNumberExistStatus) -> {
+            if (lotNumberExistStatus){
+                Toast.makeText(getContext(), "This lot number already exist",
+                        Toast.LENGTH_SHORT).show();
+            }
+            else {
+                //check if the image/video uploaded successfully to storage
+                addItemToStorage((uploadSucceedStatus,imageVideoReference) -> {
+                    if(uploadSucceedStatus){
+                        //add data to database
+                        addItemToDatabase(lotNumber, name, category, period, description,
+                                imageVideoReference);
+                        resetInformation();
+                    }
+                    else {
+                        Toast.makeText(getContext(), "Image/Video upload failed. " +
+                                        "Process aborted", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
+    }
 
-        //upload image to firebase storage
+    private void addItemToStorage(final storageResultChecker isUploadSuccessfulChecker){
+        StorageReference imageVideoReference;
+        UploadTask uploadTask;
         imageVideoReference = storageReference.child(imageVideo.getLastPathSegment());
         uploadTask = imageVideoReference.putFile(imageVideo);
+        uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                isUploadSuccessfulChecker.result(true, imageVideoReference);
+            }
+        });
         uploadTask.addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                uploadSucceed[0] = false;
+                isUploadSuccessfulChecker.result(false, imageVideoReference);
             }
         });
-        if (!uploadSucceed[0]) {
-            Toast.makeText(getContext(), "Image/Video upload failed. Process aborted",
-                    Toast.LENGTH_SHORT).show();
-            return;
-        }
+    }
 
-        //create a new item to store input information into firebase
-        itemsReference = db.getReference("Items");
+    private void addItemToDatabase(String lotNumber, String name, String category, String period,
+                                   String description, StorageReference imageVideoReference){
+        //itemsReference = db.getReference("Items");
         String id = itemsReference.push().getKey();
         if (id == null){
             return;
         }
+        //create a new item to store input information into firebase
         Item item = new Item(lotNumber, name, category, period, description, imageVideoReference);
 
-        itemsReference.child(id).setValue(item).addOnCompleteListener(
-                task -> {
-                    if (task.isSuccessful()) {
-                        Toast.makeText(getContext(), "Collection added", Toast.LENGTH_SHORT)
-                                .show();
-                    } else {
-                        Toast.makeText(getContext(), "Failed to add item", Toast.LENGTH_SHORT)
-                                .show();
-                    }
+        itemsReference.child(id).setValue(item).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                Toast.makeText(getContext(), "Collection added", Toast.LENGTH_SHORT)
+                        .show();
+            } else {
+                Toast.makeText(getContext(), "Failed to add item", Toast.LENGTH_SHORT)
+                        .show();
                 }
+            }
         );
     }
 
-    private boolean checkLotNumberExist(String lotNumber, final boolean[] lotNumberExistStatus) {
+    private void checkLotNumberExist(String lotNumber,
+                                     final statusResultChecker isLotNumberExistChecker){
         ValueEventListener dbListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot itemSnapshot : snapshot.getChildren()){
-                    String itemLotNumber = snapshot.child("lotNumber").getValue(String.class);
+                boolean lotNumberExists = false;
+                for (DataSnapshot itemSnapshot : snapshot.getChildren()) {
+                    String itemLotNumber = itemSnapshot.child("lotNumber").getValue(String.class);
                     if (lotNumber.equals(itemLotNumber)) {
                         Toast.makeText(getContext(), "This lot number has been used",
                                 Toast.LENGTH_SHORT).show();
-                        lotNumberExistStatus[0] = true;
+                        lotNumberExists = true;
                         break;
                     }
                 }
+                isLotNumberExistChecker.result(lotNumberExists);
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 Toast.makeText(getContext(), "Database error", Toast.LENGTH_SHORT).show();
             }
         };
-        lotNumberExistStatus[0] = false;
         itemsReference.addListenerForSingleValueEvent(dbListener);
-        return lotNumberExistStatus[0];
     }
 
     private void selectMedia() {
@@ -212,6 +229,15 @@ public class AddActivityFragment extends Fragment {
         nameEditText.setText("");
         categorySpinner.setSelection(0);
         periodSpinner.setSelection(0);
+        descriptionEditText.setText("");
         imageVideo = null;
     }
+}
+
+interface statusResultChecker {
+    void result(boolean lotNumberExistStatus);
+}
+
+interface storageResultChecker {
+    void result(boolean uploadSucceedStatus, StorageReference imageVideoReference);
 }
