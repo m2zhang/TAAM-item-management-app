@@ -45,5 +45,7 @@ dependencies {
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
     implementation("com.google.firebase:firebase-storage:20.0.0")
+    implementation("com.itextpdf:itext7-core:7.2.6")
+
 
 }
