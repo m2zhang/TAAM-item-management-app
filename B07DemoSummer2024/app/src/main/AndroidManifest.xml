@@ -17,6 +17,9 @@
         <activity android:name=".AddActivity" android:exported="false" />
         <activity android:name=".SearchActivity" android:exported="false" />
         <activity android:name=".ReportActivity" android:exported="false" />
+        <activity android:name=".GeneralUserActivity" android:exported="false" />
+
+
 
         <activity
             android:name=".MainActivity"

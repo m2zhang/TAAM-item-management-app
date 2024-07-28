@@ -24,7 +24,7 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/buttonPrevious"
+                android:id="@+id/buttonBack"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="2dp"
@@ -32,30 +32,17 @@
                 android:backgroundTint="#000000"
                 android:minWidth="50dp"
                 android:padding="10dp"
-                android:text="Prev"
+                android:text="Back"
                 android:textSize="12sp"
                 app:cornerRadius="10dp"
                 app:iconPadding="0dp" />
 
             <FrameLayout
-                android:layout_width="50dp"
+                android:layout_width="200dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1">
 
             </FrameLayout>
-
-            <Button
-                android:id="@+id/buttonNext"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="2dp"
-                android:layout_weight="1"
-                android:backgroundTint="#000000"
-                android:minWidth="50dp"
-                android:padding="10dp"
-                android:text="Next"
-                android:textSize="12sp"
-                app:cornerRadius="10dp" />
 
         </LinearLayout>
 
