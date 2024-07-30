@@ -122,6 +122,3 @@ public class RemoveItemFragment extends Fragment {
         });
     }
 }
-
-
-

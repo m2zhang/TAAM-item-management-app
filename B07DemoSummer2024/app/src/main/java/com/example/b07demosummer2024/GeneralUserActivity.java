@@ -34,4 +34,7 @@ public class GeneralUserActivity extends AppCompatActivity {
         transaction.addToBackStack(null);
         transaction.commit();
     }
+
 }
+
+

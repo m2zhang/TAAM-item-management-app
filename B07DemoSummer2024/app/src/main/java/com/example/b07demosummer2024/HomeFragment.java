@@ -10,22 +10,20 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.widget.ProgressBar;
 import android.widget.Button;
-
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseException;  // Add this import
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class HomeFragment extends Fragment implements OnItemSelectedListener {
 
@@ -79,7 +77,7 @@ public class HomeFragment extends Fragment implements OnItemSelectedListener {
 
                     RemoveItemFragment removeItemFragment = RemoveItemFragment.newInstance(lotNumber, name, category, period, description, picture, video);
                     getParentFragmentManager().beginTransaction()
-                            .replace(R.id.fragment_container, removeItemFragment) // ??
+                            .replace(R.id.fragment_container, removeItemFragment)
                             .addToBackStack(null)
                             .commit();
                 }
@@ -124,23 +122,40 @@ public class HomeFragment extends Fragment implements OnItemSelectedListener {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 itemList.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    //Log.i("Database", "Processing snapshot: " + snapshot.getKey());
-                    Item item = snapshot.getValue(Item.class);
-                    //Log.i("Item picture", item.getPicture());
-                    //Log.i("Item LotNum", String.format("%d", item.getLotNumber()));
-                    itemList.add(item);
+                    Item item = safeDataSnapshotToItem(snapshot);
+                    if (item != null) {
+                        itemList.add(item);
+                    }
                 }
                 itemAdapter.notifyDataSetChanged();
                 progressBar.setVisibility(View.GONE);
-                //Log.i("Item count from adapter", String.format("%d", itemAdapter.getItemCount()));
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                // Handle possible errors
                 progressBar.setVisibility(View.GONE);
             }
         });
+    }
+
+    private Item safeDataSnapshotToItem(DataSnapshot dataSnapshot) {
+        try {
+            Item item = dataSnapshot.getValue(Item.class);
+
+            if (item != null) {
+                Object lotNumberObj = dataSnapshot.child("LotNumber").getValue();
+                if (lotNumberObj instanceof String) {
+                    item.setLotNumber(Integer.parseInt((String) lotNumberObj));
+                } else if (lotNumberObj instanceof Long) {
+                    item.setLotNumber(((Long) lotNumberObj).intValue());
+                }
+            }
+
+            return item;
+        } catch (DatabaseException | NumberFormatException e) {
+            Log.e("HomeFragment", "Data conversion error: " + e.getMessage());
+            return null;
+        }
     }
 
     private void loadFragment(Fragment fragment) {
