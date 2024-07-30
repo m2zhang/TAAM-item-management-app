@@ -8,17 +8,17 @@ public class Item {
     private String category;
     private String period;
     private String description;
-    private StorageReference imageVideo;
+    private String imageVideoReference;
 
 
     public Item(String lotNumber, String name, String category, String period, String description,
-                StorageReference imageVideo) {
+                String imageVideoReference) {
         this.lotNumber = lotNumber;
         this.name = name;
         this.category = category;
         this.period = period;
         this.description = description;
-        this.imageVideo = imageVideo;
+        this.imageVideoReference = imageVideoReference;
     }
 
     public String getLotNumber() {
@@ -39,5 +39,9 @@ public class Item {
 
     public String getDescription() {
         return description;
+    }
+
+    public String getURL() {
+        return imageVideoReference;
     }
 }

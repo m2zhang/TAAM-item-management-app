@@ -29,22 +29,44 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+import java.util.UUID;
+
 
 public class AddActivityFragment extends Fragment {
     private EditText lotNumberEditText, nameEditText, descriptionEditText;
     private Spinner categorySpinner, periodSpinner;
     private Button submitButton, cancelButton, selectImageVideoButton;
     private Uri imageVideo;
+    private ActivityResultLauncher<PickVisualMediaRequest> pickImageVideo;
     private FirebaseDatabase db;
     private DatabaseReference itemsReference;
     private FirebaseStorage storage;
     private StorageReference storageReference;
+
+
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.add_activity, container, false);
+
+        pickImageVideo = registerForActivityResult(new PickVisualMedia(), uri -> {
+            if (uri != null){
+                //Log.d("Image/Video Picker", "Selected URI" + uri); for debugging
+                imageVideo = uri;
+                Toast.makeText(getContext(), "Image/Video Selected: " + uri,
+                        Toast.LENGTH_SHORT).show();
+            }
+            else {
+                //Log.d("Image/Video Picker", "No Image/Video Selected"); for debugging
+                Toast.makeText(getContext(), "No Image/Video Selected",
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
 
         db = FirebaseDatabase.getInstance("https://b07-project-c1ef0-default-rtdb.firebaseio.com/");
         itemsReference = db.getReference("Items");
@@ -57,7 +79,7 @@ public class AddActivityFragment extends Fragment {
         periodSpinner = view.findViewById(R.id.periodSpinner);
         descriptionEditText = view.findViewById(R.id.descriptionEditText);
 
-        submitButton = view.findViewById(R.id.submitButton);
+        submitButton = view.findViewById(R.id.submitButton2);
         cancelButton = view.findViewById(R.id.cancelButton);
         selectImageVideoButton = view.findViewById(R.id.selectImageVideoButton);
 
@@ -106,9 +128,15 @@ public class AddActivityFragment extends Fragment {
         String description = descriptionEditText.getText().toString().trim();
 
         //check if all of the fields are filled in
+        //lot number cannot be a number
         if (lotNumber.isEmpty() || name.isEmpty() || category.isEmpty() || period.isEmpty()
                 || description.isEmpty() || imageVideo == null){
             Toast.makeText(getContext(), "Please fill in all information",
+                    Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (!lotNumber.matches("\\d+")){
+            Toast.makeText(getContext(), "Please enter a valid lot number with digits only ",
                     Toast.LENGTH_SHORT).show();
             return;
         }
@@ -116,7 +144,7 @@ public class AddActivityFragment extends Fragment {
         //check whether the lot number is reused
         checkLotNumberExist(lotNumber, (lotNumberExistStatus) -> {
             if (lotNumberExistStatus){
-                Toast.makeText(getContext(), "This lot number already exist",
+                Toast.makeText(getContext(), "Lot number already exist",
                         Toast.LENGTH_SHORT).show();
             }
             else {
@@ -138,26 +166,36 @@ public class AddActivityFragment extends Fragment {
     }
 
     private void addItemToStorage(final storageResultChecker isUploadSuccessfulChecker){
-        StorageReference imageVideoReference;
+        final StorageReference imageVideoReference;
         UploadTask uploadTask;
-        imageVideoReference = storageReference.child(imageVideo.getLastPathSegment());
+        String timeStamp = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss-SSSZ",
+                Locale.CANADA).format(new Date());
+        String random = UUID.randomUUID().toString();
+        imageVideoReference = storageReference.child(imageVideo.getLastPathSegment()
+                + "-" + random + "-" + timeStamp);
         uploadTask = imageVideoReference.putFile(imageVideo);
         uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                isUploadSuccessfulChecker.result(true, imageVideoReference);
+                imageVideoReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri){
+                        isUploadSuccessfulChecker.result(true, uri.toString());
+                    }
+                });
             }
         });
         uploadTask.addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                isUploadSuccessfulChecker.result(false, imageVideoReference);
+                isUploadSuccessfulChecker.result(false, null);
             }
         });
     }
 
     private void addItemToDatabase(String lotNumber, String name, String category, String period,
-                                   String description, StorageReference imageVideoReference){
+                                   String description, String imageVideoReference){
         //itemsReference = db.getReference("Items");
         String id = itemsReference.push().getKey();
         if (id == null){
@@ -187,8 +225,10 @@ public class AddActivityFragment extends Fragment {
                 for (DataSnapshot itemSnapshot : snapshot.getChildren()) {
                     String itemLotNumber = itemSnapshot.child("lotNumber").getValue(String.class);
                     if (lotNumber.equals(itemLotNumber)) {
+                        /*
                         Toast.makeText(getContext(), "This lot number has been used",
                                 Toast.LENGTH_SHORT).show();
+                        */
                         lotNumberExists = true;
                         break;
                     }
@@ -204,21 +244,6 @@ public class AddActivityFragment extends Fragment {
     }
 
     private void selectMedia() {
-        ActivityResultLauncher<PickVisualMediaRequest> pickImageVideo =
-                registerForActivityResult(new PickVisualMedia(), uri -> {
-                    if (uri != null){
-                        //Log.d("Image/Video Picker", "Selected URI" + uri); for debugging
-                        imageVideo = uri;
-                        Toast.makeText(getContext(), "Image/Video Selected: " + uri,
-                                Toast.LENGTH_SHORT).show();
-                    }
-                    else {
-                        //Log.d("Image/Video Picker", "No Image/Video Selected"); for debugging
-                        Toast.makeText(getContext(), "No Image/Video Selected",
-                                Toast.LENGTH_SHORT).show();
-                    }
-                });
-
         pickImageVideo.launch(new PickVisualMediaRequest.Builder()
                 .setMediaType(PickVisualMedia.ImageAndVideo.INSTANCE)
                 .build());
@@ -239,5 +264,5 @@ interface statusResultChecker {
 }
 
 interface storageResultChecker {
-    void result(boolean uploadSucceedStatus, StorageReference imageVideoReference);
+    void result(boolean uploadSucceedStatus, String imageVideoReference);
 }

@@ -154,7 +154,6 @@
             android:layout_height="41dp"
             android:ems="10"
             android:inputType="text"
-            android:text="Enter Lot Number"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.771"
@@ -168,7 +167,6 @@
             android:layout_height="41dp"
             android:ems="10"
             android:inputType="text"
-            android:text="Enter Name"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.771"
@@ -191,7 +189,7 @@
             app:layout_constraintVertical_bias="0.648" />
 
         <Button
-            android:id="@+id/submitButton"
+            android:id="@+id/submitButton2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Submit"
