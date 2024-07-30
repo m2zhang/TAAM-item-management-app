@@ -1,27 +1,20 @@
 package com.example.b07demosummer2024;
 
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import android.widget.ProgressBar;
-
-
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
+import android.widget.ProgressBar;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,11 +22,12 @@ public class HomeFragment extends Fragment {
 
     private RecyclerView recyclerView;
     private ItemAdapter itemAdapter;
-    private List<Item> itemList;
     private ProgressBar progressBar;
 
-    private FirebaseDatabase db;
-    private DatabaseReference itemsRef;
+    private static FirebaseDatabase db;
+    private static DatabaseReference itemsRef;
+    private static List<Item> itemList = new ArrayList<>();
+    private static boolean dataFetched = false;
 
     @Nullable
     @Override
@@ -45,56 +39,43 @@ public class HomeFragment extends Fragment {
         // Set up the RecyclerView
         recyclerView = view.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        // Initialize and set the adapter for RecyclerView here
-        itemList = new ArrayList<>();
         itemAdapter = new ItemAdapter(itemList);
-
         recyclerView.setAdapter(itemAdapter);
 
         progressBar = view.findViewById(R.id.progress_bar);
 
-        db = FirebaseDatabase.getInstance("https://b07-project-c1ef0-default-rtdb.firebaseio.com/");
-
-        fetchItemsFromDatabase();
+        if (!dataFetched) {
+            db = FirebaseDatabase.getInstance("https://b07-project-c1ef0-default-rtdb.firebaseio.com/");
+            fetchItemsFromDatabase();
+        } else {
+            progressBar.setVisibility(View.GONE);
+        }
 
         return view;
     }
 
     private void fetchItemsFromDatabase() {
-        itemsRef = db.getReference("Items");
-
+        itemsRef = db.getReference("items");
         progressBar.setVisibility(View.VISIBLE);
 
-        itemsRef.addValueEventListener(new ValueEventListener() {
+        itemsRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
                 itemList.clear();
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    Log.i("!!! Testing", "did it reach here?");
-
-                    //Log.i("Database", "Processing snapshot: " + snapshot.getKey());
-                    Item item = snapshot.getValue(Item.class);
-                    //Log.i("Item picture", item.getPicture());
-                    //Log.i("Item LotNum", String.format("%d", item.getLotNumber()));
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    Item item = dataSnapshot.getValue(Item.class);
                     itemList.add(item);
                 }
                 itemAdapter.notifyDataSetChanged();
                 progressBar.setVisibility(View.GONE);
-                //Log.i("Item count from adapter", String.format("%d", itemAdapter.getItemCount()));
+                dataFetched = true;
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                // Handle possible errors
+            public void onCancelled(@NonNull DatabaseError error) {
                 progressBar.setVisibility(View.GONE);
+                // Handle possible errors.
             }
         });
-    }
-
-    private void loadFragment(Fragment fragment) {
-        FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
-        transaction.replace(R.id.fragment_container, fragment);
-        transaction.addToBackStack(null);
-        transaction.commit();
     }
 }

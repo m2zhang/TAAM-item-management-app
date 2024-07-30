@@ -24,10 +24,16 @@ import java.util.List;
 
 public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder> {
     private List<Item> itemList;
+    private GeneralUserHomeFragment fragment;
     private int selectedPosition = -1; // No selection by default
 
     public ItemAdapter(List<Item> itemList) {
         this.itemList = itemList;
+    }
+
+    public ItemAdapter(List<Item> itemList, GeneralUserHomeFragment fragment) {
+        this.itemList = itemList;
+        this.fragment = fragment;
     }
 
     @NonNull
