@@ -53,6 +53,8 @@ public class HomeFragment extends Fragment implements OnItemSelectedListener {
         recyclerView = view.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         // Initialize and set the adapter for RecyclerView
+
+
         itemList = new ArrayList<>();
         itemAdapter = new ItemAdapter(itemList, this);
 

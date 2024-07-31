@@ -163,8 +163,7 @@ public class SearchActivity extends AppCompatActivity implements OnItemSelectedL
     }
 
     public void goBackHome(View view) {
-        Intent intent = new Intent(SearchActivity.this, MainActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
+        finish();
     }
+
 }
