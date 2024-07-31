@@ -18,10 +18,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Find the search button
+        // Search button
         Button buttonSearch = findViewById(R.id.buttonSearch);
-
-        // Set a click listener for the search button
         buttonSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
