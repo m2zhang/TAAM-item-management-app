@@ -28,17 +28,6 @@
             android:translationY="15dp" />
 
         <Button
-            android:id="@+id/buttonHome"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:backgroundTint="#000000"
-            android:text="Home"
-            android:translationX="230dp"
-            android:translationY="-5dp" />
-
-        <Button
             android:id="@+id/buttonHome3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
