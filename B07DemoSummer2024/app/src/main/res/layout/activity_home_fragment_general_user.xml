@@ -9,7 +9,7 @@
     <!-- Top Navigation Bar -->
     <include
         android:id="@+id/fragment_nav_bar_general_user"
-        layout="@layout/fragment_nav_bar"
+        layout="@layout/fragment_nav_bar_general_user"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
@@ -17,6 +17,9 @@
         app:layout_constraintEnd_toEndOf="parent"/>
 
     <!-- RecyclerView -->
+
+
+    <!-- Bottom Navigation Fragment -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="0dp"
@@ -31,8 +34,6 @@
         app:layout_constraintVertical_bias="0.0"
         tools:listitem="@layout/item_layout" />
 
-
-    <!-- Bottom Navigation Fragment -->
     <include
         android:id="@+id/fragment_page_nav_general_user"
         layout="@layout/fragment_page_nav_general_user"
