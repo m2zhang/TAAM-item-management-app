@@ -2,39 +2,51 @@ package com.example.b07demosummer2024;
 
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseException;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+
+
 
 public class LoginActivity extends AppCompatActivity {
 
+    private DatabaseReference mDatabase;
     private EditText etUsername, etPassword;
     private Button btnLogin;
     private ProgressBar progressBar;
-    private FirebaseAuth auth;
-    private FirebaseFirestore db;
+    private FirebaseDatabase db;
+    private DatabaseReference itemsRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_activity);
 
-        auth = FirebaseAuth.getInstance();
-        db = FirebaseFirestore.getInstance();
+        // init firebase
+        db = FirebaseDatabase.getInstance("https://b07-project-c1ef0-default-rtdb.firebaseio.com/");
+        itemsRef = db.getReference("AdminProfiles");
 
+        // init ui elements
         etUsername = findViewById(R.id.etUsername);
         etPassword = findViewById(R.id.etPassword);
         btnLogin = findViewById(R.id.btnLogin);
@@ -58,44 +70,56 @@ public class LoginActivity extends AppCompatActivity {
 
                 progressBar.setVisibility(View.VISIBLE);
 
-                // Query Firestore to get the email corresponding to the entered username
-                db.collection("users").whereEqualTo("username", username)
-                        .get()
-                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                if (task.isSuccessful()) {
-                                    if (!task.getResult().isEmpty()) {
-                                        // Assuming usernames are unique and we get one result
-                                        DocumentSnapshot document = task.getResult().getDocuments().get(0);
-                                        String email = document.getString("email");
+                if (authenticateLogin(username, password)){
+                    progressBar.setVisibility(View.GONE);
+                    Toast.makeText(getApplicationContext(), "nice", Toast.LENGTH_SHORT).show();
+                    finish();
+                    return;
+                }
+                else{
+                    progressBar.setVisibility(View.GONE);
+                    //Toast.makeText(getApplicationContext(), "Incorrect Credentials", Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
-                                        // Authenticate user with the retrieved email
-                                        auth.signInWithEmailAndPassword(email, password)
-                                                .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
-                                                    @Override
-                                                    public void onComplete(@NonNull Task<AuthResult> task) {
-                                                        progressBar.setVisibility(View.GONE);
-                                                        if (!task.isSuccessful()) {
-                                                            Toast.makeText(LoginActivity.this, "Login failed", Toast.LENGTH_LONG).show();
-                                                        } else {
-                                                            Toast.makeText(LoginActivity.this, "Login successful!", Toast.LENGTH_SHORT).show();
-                                                            // You can start a new activity here
-                                                            // startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                                                        }
-                                                    }
-                                                });
-                                    } else {
-                                        progressBar.setVisibility(View.GONE);
-                                        Toast.makeText(LoginActivity.this, "Username not found!", Toast.LENGTH_SHORT).show();
-                                    }
-                                } else {
-                                    progressBar.setVisibility(View.GONE);
-                                    Toast.makeText(LoginActivity.this, "Error fetching user data", Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        });
             }
         });
     }
+
+    private boolean authenticateLogin(String username, String password) {
+        Log.d("LoginActivity","Matching credentials from database.");
+        boolean auth = false;
+        User login = new User(username, password);
+        itemsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                User user;
+                for(DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    user = null;
+                    try {
+                        user = dataSnapshot.getValue(User.class);
+                    } catch (DatabaseException e) {
+                        Log.e("LoginActivity", "Dataconversion error: " + e.getMessage());
+                    }
+
+                    if (user != null && user.getUser().equals(username) && user.getPass().equals(password)) {
+                        Toast.makeText(getApplicationContext(), "working", Toast.LENGTH_SHORT).show();
+                        Log.d("LoginActivity", "Credentials authorised");
+                        auth = true;
+                        return;
+                    }
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e("LoginActivity","Database error: " + error.getMessage());
+            }
+        });
+        if(!auth) Toast.makeText(getApplicationContext(), "false", Toast.LENGTH_SHORT).show();
+        return auth;
+    }
+
+
 }
