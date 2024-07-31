@@ -8,6 +8,12 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import android.net.Uri;
+
 import java.io.InputStream;
 import java.io.IOException;
 import java.net.URL;
@@ -69,7 +75,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
             }
         });
 
-        /*
+
         String pictureUrl = item.getPicture();
         if (pictureUrl != null && !pictureUrl.isEmpty()) {
             Picasso.get()
@@ -78,25 +84,36 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
                     .error(R.drawable.default_image)
                     .into(holder.imageViewPicture);
         } else {
-            // Handle the case where the URL is empty or null
-            Picasso.get()
-                    .load(R.drawable.default_image) // Or some default image
-                    .into(holder.imageViewPicture);
+            holder.imageViewPicture.setVisibility(View.GONE);
         }
-        */
 
-        holder.imageViewPicture.setImageResource(R.drawable.default_image); // Replace with your default image resource
 
-        holder.videoViewVideo.setVisibility(View.GONE);
-        /*
-        // Load video
-        holder.videoViewVideo.setVideoURI(Uri.parse(item.getVideo()));
-        holder.videoViewVideo.seekTo(1);
+        String videoPath = item.getVideo();
+
+        if (videoPath != null && !videoPath.isEmpty()) {
+    holder.videoViewVideo.setVisibility(View.VISIBLE);
+
+    // Reference to the video in Firebase Storage
+    FirebaseStorage storage = FirebaseStorage.getInstance();
+    StorageReference videoRef = storage.getReference().child(videoPath);
+
+    // Get the download URL
+    videoRef.getDownloadUrl().addOnSuccessListener(uri -> {
+        holder.videoViewVideo.setVideoURI(uri);
         holder.videoViewVideo.setOnPreparedListener(mp -> {
             mp.setLooping(true);
             holder.videoViewVideo.start();
         });
-         */
+    }).addOnFailureListener(e -> {
+        // Handle any errors
+        holder.videoViewVideo.setVisibility(View.GONE);
+    });
+} else {
+    // Handle the case where the URL is empty or null
+    holder.videoViewVideo.setVisibility(View.GONE);
+}
+        holder.videoViewVideo.setVisibility(View.GONE);
+
     }
 
     @Override
