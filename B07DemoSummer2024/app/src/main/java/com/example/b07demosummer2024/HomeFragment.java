@@ -78,6 +78,13 @@ public class HomeFragment extends Fragment implements OnItemSelectedListener {
             }
         });
 
+        buttonAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                loadFragment(new AddActivityFragment());
+            }
+        });
+
         buttonRemoveItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
