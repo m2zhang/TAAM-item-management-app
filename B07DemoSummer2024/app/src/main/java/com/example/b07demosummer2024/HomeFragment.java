@@ -44,7 +44,6 @@ public class HomeFragment extends Fragment implements OnItemSelectedListener {
         View view = inflater.inflate(R.layout.activity_home_fragment, container, false);
 
         Button buttonRemoveItem = view.findViewById(R.id.buttonRemove);
-        Button buttonHome = view.findViewById(R.id.buttonHome);
         Button buttonSearch = view.findViewById(R.id.buttonSearch);
         Button buttonAdd = view.findViewById(R.id.buttonAdd);
         Button buttonReport = view.findViewById(R.id.buttonReport);
@@ -102,17 +101,6 @@ public class HomeFragment extends Fragment implements OnItemSelectedListener {
                             .addToBackStack(null)
                             .commit();
                 }
-            }
-        });
-
-        // Home button functionality
-        buttonHome.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (savedInstanceState == null) {
-                    loadFragment(new HomeFragment());
-                }
-
             }
         });
 
