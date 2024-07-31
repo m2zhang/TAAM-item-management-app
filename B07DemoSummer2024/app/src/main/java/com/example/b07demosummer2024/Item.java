@@ -6,8 +6,7 @@ public class Item {
     private String Category;
     private String Period;
     private String Description;
-    private String Picture;
-    private String Video;
+    private String imageVideoReference;
 
     public Item() {
         // Default constructor required for calls to DataSnapshot.getValue(Item.class)
@@ -20,8 +19,7 @@ public class Item {
         this.Category = category;
         this.Period = period;
         this.Description = description;
-        this.Picture = picture;
-        this.Video = video;
+        this.imageVideoReference = imageVideoReference;
     }
 
     // Getter and Setters
@@ -34,15 +32,17 @@ public class Item {
     public String getCategory() {return Category; }
     public void setCategory(String category) { this.Category = category; }
 
+    public String getDescription() {
+        return description;
+    }
+    public void setDescription(String description) { this.Description = description; }
+
     public String getPeriod() {return Period; }
     public void setPeriod(String period) { this.Period = period; }
 
-    public String getDescription() {return Description; }
-    public void setDescription(String description) { this.Description = description; }
-
-    public String getPicture() {return Picture; }
-    public void setPicture(String picture) { this.Picture = picture; }
-
-    public String getVideo() {return Video; }
-    public void setVideo(String video) { this.Video = video; }
+    public String getURL() {
+        return imageVideoReference;
+    }
+    public void setURL(String imageVideoReference ){
+        this.imageVideoReference = imageVideoReference;}
 }

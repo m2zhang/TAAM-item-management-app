@@ -46,6 +46,9 @@ public class HomeFragment extends Fragment implements OnItemSelectedListener {
         Button buttonRemoveItem = view.findViewById(R.id.buttonRemove);
         Button buttonHome = view.findViewById(R.id.buttonHome);
 
+        // New button, just for add activity only
+
+
         // Set up the RecyclerView
         recyclerView = view.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
