@@ -148,7 +148,7 @@ public class HomeFragment extends Fragment implements OnItemSelectedListener {
             Item item = dataSnapshot.getValue(Item.class);
 
             if (item != null) {
-                Object lotNumberObj = dataSnapshot.child("LotNumber").getValue();
+                Object lotNumberObj = dataSnapshot.child("lotNumber").getValue();
                 if (lotNumberObj instanceof String) {
                     item.setLotNumber(Integer.parseInt((String) lotNumberObj));
                 } else if (lotNumberObj instanceof Long) {
