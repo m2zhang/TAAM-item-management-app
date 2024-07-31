@@ -44,18 +44,16 @@ public class HomeFragment extends Fragment implements OnItemSelectedListener {
         View view = inflater.inflate(R.layout.activity_home_fragment, container, false);
 
         Button buttonRemoveItem = view.findViewById(R.id.buttonRemove);
-        Button buttonHome = view.findViewById(R.id.buttonHome);
         Button buttonSearch = view.findViewById(R.id.buttonSearch);
         Button buttonAdd = view.findViewById(R.id.buttonAdd);
         Button buttonReport = view.findViewById(R.id.buttonReport);
+        Button buttonView = view.findViewById(R.id.buttonView);
 
 
         // Set up the RecyclerView
         recyclerView = view.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         // Initialize and set the adapter for RecyclerView
-
-
         itemList = new ArrayList<>();
         itemAdapter = new ItemAdapter(itemList, this);
 
@@ -106,12 +104,25 @@ public class HomeFragment extends Fragment implements OnItemSelectedListener {
             }
         });
 
-        // Home button functionality
-        buttonHome.setOnClickListener(new View.OnClickListener() {
+        buttonView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (savedInstanceState == null) {
-                    loadFragment(new HomeFragment());
+                int selectedPosition = itemAdapter.getSelectedPosition();
+                if (selectedPosition != -1) {
+                    Item selectedItem = itemAdapter.getItem(selectedPosition);
+                    int lotNumber = selectedItem.getLotNumber();
+                    String name = selectedItem.getName();
+                    String category = selectedItem.getCategory();
+                    String period = selectedItem.getPeriod();
+                    String description = selectedItem.getDescription();
+                    String picture = selectedItem.getPicture();
+                    String video = selectedItem.getVideo();
+
+                    ViewFragment viewFragment = ViewFragment.newInstance(lotNumber, name, category, period, description, picture, video);
+                    getParentFragmentManager().beginTransaction()
+                            .replace(R.id.fragment_container, viewFragment)
+                            .addToBackStack(null)
+                            .commit();
                 }
             }
         });
