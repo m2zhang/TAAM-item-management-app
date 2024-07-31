@@ -115,6 +115,21 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/editTextPeriod" />
 
+
+    <Button
+        android:id="@+id/buttonView"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_marginStart="85dp"
+        android:layout_marginTop="12dp"
+        android:background="@color/buttonColor"
+        android:text="View"
+        android:textColor="@android:color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/editTextPeriod" />
+
     <TextView
         android:id="@+id/textViewResults"
         android:layout_width="wrap_content"

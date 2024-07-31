@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.content.Intent;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,19 +24,23 @@ import java.util.List;
 public class SearchActivity extends AppCompatActivity implements OnItemSelectedListener {
 
     private EditText editTextLotNumber, editTextName, editTextCategory, editTextPeriod;
-    private Button buttonSearch;
+
     private TextView textViewResults;
-    private RecyclerView recyclerViewResults;
+
     private List<Item> itemList;
     private ItemAdapter itemAdapter;
 
-    private FirebaseDatabase db;
+
     private DatabaseReference itemsRef;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.search_activity);
+
+        Button buttonSearch;
+        RecyclerView recyclerViewResults;
+        FirebaseDatabase db;
 
         // Initialize UI elements
         editTextLotNumber = findViewById(R.id.editTextLotNumber);
@@ -75,14 +78,14 @@ public class SearchActivity extends AppCompatActivity implements OnItemSelectedL
 
         if (!isAnyFieldFilled) {
             // Fetch all data if no field is filled
-            fetchAllItems();
+            fetchAllItems(lotNumber, name, category, period);
         } else {
             // Fetch filtered data based on the filled fields
             fetchFilteredItems(lotNumber, name, category, period);
         }
     }
 
-    private void fetchAllItems() {
+    private void fetchAllItems(String lotNumber, String name, String category, String period) {
         Log.d("SearchActivity", "Fetching all items from database.");
         itemsRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -96,7 +99,7 @@ public class SearchActivity extends AppCompatActivity implements OnItemSelectedL
                     }
                 }
                 itemAdapter.notifyDataSetChanged();
-                textViewResults.setText("Total Results: " + itemList.size());
+                updateResultsMessage(lotNumber, name, category, period);
                 Log.d("SearchActivity", "Total items fetched: " + itemList.size());
             }
 
@@ -121,7 +124,7 @@ public class SearchActivity extends AppCompatActivity implements OnItemSelectedL
                     }
                 }
                 itemAdapter.notifyDataSetChanged();
-                textViewResults.setText("Filtered Results: " + itemList.size());
+                updateResultsMessage(lotNumber, name, category, period);
                 Log.d("SearchActivity", "Total filtered items fetched: " + itemList.size());
             }
 
@@ -131,19 +134,6 @@ public class SearchActivity extends AppCompatActivity implements OnItemSelectedL
             }
         });
     }
-
-    private void searchItems(String lotNumber, String name, String category, String period) {
-        // Perform search (this is just a dummy implementation)
-        List<Item> results = new ArrayList<>();
-        for (Item item : itemList) {
-            if ((lotNumber.isEmpty() /*|| item.getLotNumber().contains(lotNumber)*/) &&
-                    (name.isEmpty() || item.getName().contains(name)) &&
-                    (category.isEmpty() || item.getCategory().contains(category)) &&
-                    (period.isEmpty() || item.getPeriod().contains(period))) {
-                results.add(item);
-            }
-        }
-}
 
     private Item safeDataSnapshotToItem(DataSnapshot dataSnapshot) {
         try {
@@ -155,19 +145,41 @@ public class SearchActivity extends AppCompatActivity implements OnItemSelectedL
     }
 
     private boolean matchesFilters(Item item, String lotNumber, String name, String category, String period) {
-        if (!TextUtils.isEmpty(lotNumber) && item.getLotNumber() != Integer.parseInt(lotNumber)) {
+        if (!TextUtils.isEmpty(lotNumber) && !matchesFiltersUnique(item, lotNumber)) {
             return false;
         }
-        if (!TextUtils.isEmpty(name) && !item.getName().equalsIgnoreCase(name)) {
+        if (!TextUtils.isEmpty(name) && !item.getName().toLowerCase().contains(name.toLowerCase())) {
             return false;
         }
-        if (!TextUtils.isEmpty(category) && !item.getCategory().equalsIgnoreCase(category)) {
+        if (!TextUtils.isEmpty(category) && !item.getCategory().toLowerCase().contains(category.toLowerCase())) {
             return false;
         }
-        if (!TextUtils.isEmpty(period) && !item.getPeriod().equalsIgnoreCase(period)) {
+        if (!TextUtils.isEmpty(period) && !item.getPeriod().toLowerCase().contains(period.toLowerCase())) {
             return false;
         }
         return true;
+    }
+
+    private boolean matchesFiltersUnique(Item item, String lotNumber) {
+        return String.valueOf(item.getLotNumber()).equals(lotNumber);
+    }
+
+    private void updateResultsMessage(String lotNumber, String name, String category, String period) {
+        StringBuilder message = new StringBuilder();
+        message.append("Filtered Results: ").append(itemList.size()).append("\n");
+        if (!TextUtils.isEmpty(lotNumber)) {
+            message.append("Lot# = ").append(lotNumber).append("; ");
+        }
+        if (!TextUtils.isEmpty(name)) {
+            message.append("Name = ").append(name).append("; ");
+        }
+        if (!TextUtils.isEmpty(category)) {
+            message.append("Category = ").append(category).append("; ");
+        }
+        if (!TextUtils.isEmpty(period)) {
+            message.append("Period = ").append(period).append("; ");
+        }
+        textViewResults.setText(message.toString());
     }
 
     @Override
@@ -178,5 +190,4 @@ public class SearchActivity extends AppCompatActivity implements OnItemSelectedL
     public void goBackHome(View view) {
         finish();
     }
-
 }
