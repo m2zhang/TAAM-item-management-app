@@ -45,8 +45,11 @@ public class HomeFragment extends Fragment implements OnItemSelectedListener {
 
         Button buttonRemoveItem = view.findViewById(R.id.buttonRemove);
         Button buttonHome = view.findViewById(R.id.buttonHome);
+        Button buttonSearch = view.findViewById(R.id.buttonSearch);
+        Button buttonAdd = view.findViewById(R.id.buttonAdd);
+        Button buttonRemove = view.findViewById(R.id.buttonRemove);
+        Button buttonReport = view.findViewById(R.id.buttonReport);
 
-        // New button, just for add activity only
 
 
         // Set up the RecyclerView
@@ -65,6 +68,15 @@ public class HomeFragment extends Fragment implements OnItemSelectedListener {
         db = FirebaseDatabase.getInstance("https://b07-project-c1ef0-default-rtdb.firebaseio.com/");
 
         fetchItemsFromDatabase();
+
+        // Search button
+        buttonSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), SearchActivity.class);
+                startActivity(intent);
+            }
+        });
 
         buttonRemoveItem.setOnClickListener(new View.OnClickListener() {
             @Override
