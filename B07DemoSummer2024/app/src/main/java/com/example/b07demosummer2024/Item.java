@@ -1,50 +1,71 @@
 package com.example.b07demosummer2024;
 
+import com.google.firebase.storage.StorageReference;
+
 public class Item {
-    private int LotNumber;
-    private String Name;
-    private String Category;
-    private String Period;
-    private String Description;
-    private String Picture;
-    private String Video;
+    private Integer lotNumber;
+    private String name;
+    private String category;
+    private String period;
+    private String description;
+    private String picture;
+    private String video;
+
 
     public Item() {
         // Default constructor required for calls to DataSnapshot.getValue(Item.class)
     }
 
-    // Just make whichever parts null if not included (e.g. for video and/or picture)
-    public Item(int lotNumber, String name, String category, String period, String description, String picture, String video) {
-        this.LotNumber = lotNumber;
-        this.Name = name;
-        this.Category = category;
-        this.Period = period;
-        this.Description = description;
-        this.Picture = picture;
-        this.Video = video;
+    public Item(Integer lotNumber, String name, String category, String period, String description,
+                String picture, String video) {
+        this.lotNumber = lotNumber;
+        this.name = name;
+        this.category = category;
+        this.period = period;
+        this.description = description;
+        this.picture = picture;
+        this.video = video;
     }
 
-    // Getter and Setters
-    public int getLotNumber() { return LotNumber; }
-    public void setLotNumber(int lotNumber) { this.LotNumber = lotNumber; }
+    public Integer getLotNumber() {
+        return lotNumber;
+    }
 
-    public String getName() {return Name; }
-    public void setName(String name) { this.Name = name; }
+    public void setLotNumber(int lotNumber) { this.lotNumber = lotNumber; }
 
-    public String getCategory() {return Category; }
-    public void setCategory(String category) { this.Category = category; }
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) { this.name = name; }
+
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) { this.category = category; }
+
+
+    public String getPeriod() {
+        return period;
+    }
+    public void setPeriod(String period) { this.period = period; }
+
 
     public String getDescription() {
-        return Description;
+        return description;
     }
-    public void setDescription(String description) { this.Description = description; }
 
-    public String getPeriod() {return Period; }
-    public void setPeriod(String period) { this.Period = period; }
+    public void setDescription(String description) { this.description = description; }
 
-    public String getPicture() {return Picture; }
-    public void setPicture(String picture) { this.Picture = picture; }
 
-    public String getVideo() {return Video; }
-    public void setVideo(String video) { this.Video = video; }
+    public String getPicture() { return picture; }
+
+    public void setPicture(String picture) { this.picture = picture; }
+
+    public String getVideo() { return video; }
+
+    public void setVideo(String video) { this.video = video; }
+
 }
