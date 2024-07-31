@@ -1,5 +1,6 @@
 package com.example.b07demosummer2024;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -57,6 +58,41 @@ public class GeneralUserHomeFragment extends Fragment implements OnItemSelectedL
         progressBar = view.findViewById(R.id.progress_bar);
 
         db = FirebaseDatabase.getInstance("https://b07-project-c1ef0-default-rtdb.firebaseio.com/");
+
+        Button buttonSearch = view.findViewById(R.id.buttonSearch);
+        Button buttonView = view.findViewById(R.id.buttonView);
+
+        // Search button
+        buttonSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), SearchActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        buttonView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int selectedPosition = itemAdapter.getSelectedPosition();
+                if (selectedPosition != -1) {
+                    Item selectedItem = itemAdapter.getItem(selectedPosition);
+                    int lotNumber = selectedItem.getLotNumber();
+                    String name = selectedItem.getName();
+                    String category = selectedItem.getCategory();
+                    String period = selectedItem.getPeriod();
+                    String description = selectedItem.getDescription();
+                    String picture = selectedItem.getPicture();
+                    String video = selectedItem.getVideo();
+
+                    ViewFragment viewFragment = ViewFragment.newInstance(lotNumber, name, category, period, description, picture, video);
+                    getParentFragmentManager().beginTransaction()
+                            .replace(R.id.fragment_container, viewFragment)
+                            .addToBackStack(null)
+                            .commit();
+                }
+            }
+        });
 
         fetchItemsFromDatabase();
 
