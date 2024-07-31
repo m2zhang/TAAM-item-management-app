@@ -1,5 +1,6 @@
 package com.example.b07demosummer2024;
 
+import android.content.ContentResolver;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 import android.net.Uri;
+import android.webkit.MimeTypeMap;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.PickVisualMediaRequest;
@@ -32,8 +34,9 @@ import com.google.firebase.storage.UploadTask;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.UUID;
-
+import java.lang.String;
 
 public class AddActivityFragment extends Fragment {
     private EditText lotNumberEditText, nameEditText, descriptionEditText;
@@ -45,8 +48,6 @@ public class AddActivityFragment extends Fragment {
     private DatabaseReference itemsReference;
     private FirebaseStorage storage;
     private StorageReference storageReference;
-
-
 
     @Nullable
     @Override
@@ -121,26 +122,31 @@ public class AddActivityFragment extends Fragment {
     }
 
     private void addItem(){
-        String lotNumber = lotNumberEditText.getText().toString().trim();
+        String lotNumberUnparsed = lotNumberEditText.getText().toString().trim();
+        Integer lotNumber;
         String name = nameEditText.getText().toString().trim();
         String category = categorySpinner.getSelectedItem().toString().trim();
         String period = periodSpinner.getSelectedItem().toString().trim();
         String description = descriptionEditText.getText().toString().trim();
+        final String IMAGE = "image";
+        final String VIDEO = "video";
 
         //check if all of the fields are filled in
         //lot number cannot be a number
-        if (lotNumber.isEmpty() || name.isEmpty() || category.isEmpty() || period.isEmpty()
+        if (lotNumberUnparsed.isEmpty() || name.isEmpty() || category.isEmpty() || period.isEmpty()
                 || description.isEmpty() || imageVideo == null){
             Toast.makeText(getContext(), "Please fill in all information",
                     Toast.LENGTH_SHORT).show();
             return;
         }
-        if (!lotNumber.matches("\\d+")){
+        if (!lotNumberUnparsed.matches("\\d+")){
             Toast.makeText(getContext(), "Please enter a valid lot number with digits only ",
                     Toast.LENGTH_SHORT).show();
             return;
         }
-
+        else {
+            lotNumber = Integer.parseInt(lotNumberUnparsed);
+        }
         //check whether the lot number is reused
         checkLotNumberExist(lotNumber, (lotNumberExistStatus) -> {
             if (lotNumberExistStatus){
@@ -149,12 +155,37 @@ public class AddActivityFragment extends Fragment {
             }
             else {
                 //check if the image/video uploaded successfully to storage
-                addItemToStorage((uploadSucceedStatus,imageVideoReference) -> {
-                    if(uploadSucceedStatus){
+                addItemToStorage((uploadSucceedStatus, imageVideoReference) -> {
+                    if (uploadSucceedStatus){
                         //add data to database
-                        addItemToDatabase(lotNumber, name, category, period, description,
-                                imageVideoReference);
-                        resetInformation();
+                        /*
+                                addItemToDatabase(lotNumberUnparsed, name, category, period, description,
+                                        imageVideoReference);
+                                resetInformation();
+
+                         */
+                        checkMediaType(imageVideoReference, (mediaTypeCheckerStatus, mediaType) -> {
+                            if (mediaTypeCheckerStatus){
+                                if (mediaType.equals(IMAGE)){
+                                    addItemToDatabase(lotNumber, name, category, period, description,
+                                            imageVideoReference, "");
+                                    resetInformation();
+                                }
+                                else if(mediaType.equals(VIDEO)) {
+                                    addItemToDatabase(lotNumber, name, category, period, description,
+                                            "", imageVideoReference);
+                                    resetInformation();
+                                }
+                                else {
+                                    Toast.makeText(getContext(), "Unknown Error, Should not happen." +
+                                            "Process aborted", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                            else {
+                                Toast.makeText(getContext(), "Image/Video type detection failed. " +
+                                        "Process aborted", Toast.LENGTH_SHORT).show();
+                            }
+                        });
                     }
                     else {
                         Toast.makeText(getContext(), "Image/Video upload failed. " +
@@ -165,66 +196,15 @@ public class AddActivityFragment extends Fragment {
         });
     }
 
-    private void addItemToStorage(final storageResultChecker isUploadSuccessfulChecker){
-        final StorageReference imageVideoReference;
-        UploadTask uploadTask;
-        String timeStamp = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss-SSSZ",
-                Locale.CANADA).format(new Date());
-        String random = UUID.randomUUID().toString();
-        imageVideoReference = storageReference.child(imageVideo.getLastPathSegment()
-                + "-" + random + "-" + timeStamp);
-        uploadTask = imageVideoReference.putFile(imageVideo);
-        uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                imageVideoReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                    @Override
-                    public void onSuccess(Uri uri){
-                        isUploadSuccessfulChecker.result(true, uri.toString());
-                    }
-                });
-            }
-        });
-        uploadTask.addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                isUploadSuccessfulChecker.result(false, null);
-            }
-        });
-    }
-
-    private void addItemToDatabase(String lotNumber, String name, String category, String period,
-                                   String description, String imageVideoReference){
-        //itemsReference = db.getReference("Items");
-        String id = itemsReference.push().getKey();
-        if (id == null){
-            return;
-        }
-        //create a new item to store input information into firebase
-        Item item = new Item(lotNumber, name, category, period, description, imageVideoReference);
-
-        itemsReference.child(id).setValue(item).addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                Toast.makeText(getContext(), "Collection added", Toast.LENGTH_SHORT)
-                        .show();
-            } else {
-                Toast.makeText(getContext(), "Failed to add item", Toast.LENGTH_SHORT)
-                        .show();
-                }
-            }
-        );
-    }
-
-    private void checkLotNumberExist(String lotNumber,
-                                     final statusResultChecker isLotNumberExistChecker){
+    private void checkLotNumberExist(Integer lotNumber,
+                                     final StatusResultChecker isLotNumberExistChecker){
         ValueEventListener dbListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 boolean lotNumberExists = false;
                 for (DataSnapshot itemSnapshot : snapshot.getChildren()) {
-                    String itemLotNumber = itemSnapshot.child("lotNumber").getValue(String.class);
-                    if (lotNumber.equals(itemLotNumber)) {
+                    Integer itemLotNumber = itemSnapshot.child("lotNumber").getValue(Integer.class);
+                    if (Objects.equals(lotNumber, itemLotNumber)) {
                         /*
                         Toast.makeText(getContext(), "This lot number has been used",
                                 Toast.LENGTH_SHORT).show();
@@ -243,6 +223,93 @@ public class AddActivityFragment extends Fragment {
         itemsReference.addListenerForSingleValueEvent(dbListener);
     }
 
+    private void addItemToStorage(final StorageResultChecker isUploadSuccessfulChecker){
+        final StorageReference imageVideoReference;
+        UploadTask uploadTask;
+        String timeStamp = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss-SSSZ",
+                Locale.CANADA).format(new Date());
+        String random = UUID.randomUUID().toString();
+        imageVideoReference = storageReference.child(imageVideo.getLastPathSegment()
+                + "-" + random + "-" + timeStamp);
+        uploadTask = imageVideoReference.putFile(imageVideo);
+        uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                imageVideoReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri){
+                        isUploadSuccessfulChecker.result(true, uri.toString());
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        isUploadSuccessfulChecker.result(false, null);
+                    }
+                });
+            }
+        });
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                isUploadSuccessfulChecker.result(false, null);
+            }
+        });
+    }
+
+    private void checkMediaType(String url, final MediaTypeChecker isMediaTypeCheckedChecker){
+        StorageReference mediaReference = storage.getReferenceFromUrl(url);
+        mediaReference.getMetadata().addOnSuccessListener(metadata -> {
+            String mediaType = metadata.getContentType();
+            if (mediaType != null){
+                if (mediaType.startsWith("image")){
+                    isMediaTypeCheckedChecker.result(true, "image");
+                }
+                else if (mediaType.startsWith("video")){
+                    isMediaTypeCheckedChecker.result(true, "video");
+                }
+                else {
+                    Toast.makeText(getContext(), "Media format is not image or video",
+                            Toast.LENGTH_SHORT).show();
+                    isMediaTypeCheckedChecker.result(false, null);
+                }
+            }
+            else {
+                Toast.makeText(getContext(), "Unable to determine media format",
+                        Toast.LENGTH_SHORT).show();
+                isMediaTypeCheckedChecker.result(false, null);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(getContext(), "Error: Unable to retrieve media metadata",
+                        Toast.LENGTH_SHORT).show();
+                isMediaTypeCheckedChecker.result(false, null);
+            }
+        });
+    }
+
+    private void addItemToDatabase(Integer lotNumber, String name, String category, String period,
+                                   String description, String picture, String video){
+        //itemsReference = db.getReference("Items");
+        String id = itemsReference.push().getKey();
+        if (id == null){
+            return;
+        }
+        //create a new item to store input information into firebase
+        Item item = new Item(lotNumber, name, category,
+                period, description, picture, video);
+        itemsReference.child(id).setValue(item).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                Toast.makeText(getContext(), "Collection added", Toast.LENGTH_SHORT)
+                        .show();
+            } else {
+                Toast.makeText(getContext(), "Failed to add item", Toast.LENGTH_SHORT)
+                        .show();
+                }
+            }
+        );
+    }
+
     private void selectMedia() {
         pickImageVideo.launch(new PickVisualMediaRequest.Builder()
                 .setMediaType(PickVisualMedia.ImageAndVideo.INSTANCE)
@@ -259,10 +326,14 @@ public class AddActivityFragment extends Fragment {
     }
 }
 
-interface statusResultChecker {
+interface StatusResultChecker {
     void result(boolean lotNumberExistStatus);
 }
 
-interface storageResultChecker {
+interface StorageResultChecker {
     void result(boolean uploadSucceedStatus, String imageVideoReference);
+}
+
+interface MediaTypeChecker {
+    void result(boolean mediaTypeCheckerStatus, String mediaType);
 }

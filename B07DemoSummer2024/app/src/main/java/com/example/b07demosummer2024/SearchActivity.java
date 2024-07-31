@@ -59,7 +59,7 @@ public class SearchActivity extends AppCompatActivity {
         // Perform search (this is just a dummy implementation)
         List<Item> results = new ArrayList<>();
         for (Item item : itemList) {
-            if ((lotNumber.isEmpty() || item.getLotNumber().contains(lotNumber)) &&
+            if ((lotNumber.isEmpty() /*|| item.getLotNumber().contains(lotNumber)*/) &&
                     (name.isEmpty() || item.getName().contains(name)) &&
                     (category.isEmpty() || item.getCategory().contains(category)) &&
                     (period.isEmpty() || item.getPeriod().contains(period))) {
