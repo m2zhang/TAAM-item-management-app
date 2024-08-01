@@ -105,7 +105,7 @@ public class ViewFragment extends Fragment {
         textCategory2.setText(Category);
         textViewDescription2.setText(Description);
 
-        // display media details if needed, maximum one image or video permitted
+        // display media details if needed, maximum one image or video permitteD
         if (Picture.startsWith("https://firebasestorage")) {
             Picasso.get()
                     .load(Picture)
