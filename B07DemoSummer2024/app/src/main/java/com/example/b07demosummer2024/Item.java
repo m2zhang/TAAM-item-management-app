@@ -31,7 +31,7 @@ public class Item {
         return lotNumber;
     }
 
-    public void setLotNumber(int lotNumber) { this.lotNumber = lotNumber; }
+    public void setLotNumber(Integer lotNumber) { this.lotNumber = lotNumber; }
 
     public String getName() {
         return name;

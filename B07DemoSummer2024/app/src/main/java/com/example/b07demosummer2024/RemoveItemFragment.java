@@ -42,7 +42,7 @@ public class RemoveItemFragment extends Fragment {
     private String Picture;
     private String Video;
 
-    public static RemoveItemFragment newInstance(int LotNumber, String Name, String Category, String Period, String Description, String Picture, String Video) {
+    public static RemoveItemFragment newInstance(Integer LotNumber, String Name, String Category, String Period, String Description, String Picture, String Video) {
         RemoveItemFragment fragment = new RemoveItemFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_LOT_NUMBER, LotNumber);
@@ -102,9 +102,9 @@ public class RemoveItemFragment extends Fragment {
         return view;
     }
 
-    private void removeItemFromDatabase(int LotNumber) {
+    private void removeItemFromDatabase(Integer LotNumber) {
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
-        Query query = ref.child("Items").orderByChild("LotNumber").equalTo(LotNumber);
+        Query query = ref.child("Items").orderByChild("lotNumber").equalTo(LotNumber);
 
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

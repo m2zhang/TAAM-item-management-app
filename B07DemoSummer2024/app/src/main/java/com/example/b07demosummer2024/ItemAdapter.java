@@ -75,7 +75,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
             }
         });
 
-
+        /*
         String pictureUrl = item.getPicture();
         if (pictureUrl != null && !pictureUrl.isEmpty()) {
             Picasso.get()
@@ -87,33 +87,36 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
             holder.imageViewPicture.setVisibility(View.GONE);
         }
 
-
         String videoPath = item.getVideo();
 
         if (videoPath != null && !videoPath.isEmpty()) {
-    holder.videoViewVideo.setVisibility(View.VISIBLE);
+        holder.videoViewVideo.setVisibility(View.VISIBLE);
 
-    // Reference to the video in Firebase Storage
-    FirebaseStorage storage = FirebaseStorage.getInstance();
-    StorageReference videoRef = storage.getReference().child(videoPath);
+        // Reference to the video in Firebase Storage
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference videoRef = storage.getReference().child(videoPath);
 
-    // Get the download URL
-    videoRef.getDownloadUrl().addOnSuccessListener(uri -> {
-        holder.videoViewVideo.setVideoURI(uri);
-        holder.videoViewVideo.setOnPreparedListener(mp -> {
-            mp.setLooping(true);
-            holder.videoViewVideo.start();
+        // Get the download URL
+        videoRef.getDownloadUrl().addOnSuccessListener(uri -> {
+            holder.videoViewVideo.setVideoURI(uri);
+            holder.videoViewVideo.setOnPreparedListener(mp -> {
+                mp.setLooping(true);
+                holder.videoViewVideo.start();
+            });
+        }).addOnFailureListener(e -> {
+            // Handle any errors
+            holder.videoViewVideo.setVisibility(View.GONE);
         });
-    }).addOnFailureListener(e -> {
-        // Handle any errors
+    } else {
+        // Handle the case where the URL is empty or null
         holder.videoViewVideo.setVisibility(View.GONE);
-    });
-} else {
-    // Handle the case where the URL is empty or null
-    holder.videoViewVideo.setVisibility(View.GONE);
-}
-        holder.videoViewVideo.setVisibility(View.GONE);
+    }
 
+    */
+
+        holder.imageViewPicture.setImageResource(R.drawable.default_image);
+        holder.videoViewVideo.setVisibility(View.GONE);
+        Log.i("setting images + vid", "finish one time");
     }
 
     @Override

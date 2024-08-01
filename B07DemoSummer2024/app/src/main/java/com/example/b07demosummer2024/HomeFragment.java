@@ -87,7 +87,7 @@ public class HomeFragment extends Fragment implements OnItemSelectedListener {
                 int selectedPosition = itemAdapter.getSelectedPosition();
                 if (selectedPosition != -1) {
                     Item selectedItem = itemAdapter.getItem(selectedPosition);
-                    int lotNumber = selectedItem.getLotNumber();
+                    Integer lotNumber = selectedItem.getLotNumber();
                     String name = selectedItem.getName();
                     String category = selectedItem.getCategory();
                     String period = selectedItem.getPeriod();
