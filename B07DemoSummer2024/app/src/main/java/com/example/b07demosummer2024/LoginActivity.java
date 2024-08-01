@@ -29,6 +29,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private EditText etUsername, etPassword;
     private Button btnLogin;
+    private Button btnBack;
     private ProgressBar progressBar;
     private FirebaseDatabase db;
     private DatabaseReference itemsRef;
@@ -46,7 +47,15 @@ public class LoginActivity extends AppCompatActivity {
         etUsername = findViewById(R.id.etUsername);
         etPassword = findViewById(R.id.etPassword);
         btnLogin = findViewById(R.id.btnLogin);
+        btnBack = findViewById(R.id.back);
         progressBar = findViewById(R.id.progressBar);
+
+        btnBack.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,8 +78,8 @@ public class LoginActivity extends AppCompatActivity {
                 authenticateLogin(username, password).thenAccept(isAuthenticated->{
                     progressBar.setVisibility(View.GONE);
                     if (isAuthenticated) {
-                        // Authentication successful, proceed to MainActivity
-                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                        // Authentication successful, make it go to admin page
+                        startActivity(new Intent(LoginActivity.this, HomeFragment.class));
                         finish();
                     } else {
                         // Authentication failed, show a toast or handle accordingly
@@ -101,7 +110,6 @@ public class LoginActivity extends AppCompatActivity {
                     }
 
                     if (user != null && user.getUser().equals(username) && user.getPass().equals(password)) {
-                        Toast.makeText(getApplicationContext(), "working", Toast.LENGTH_SHORT).show();
                         Log.d("LoginActivity", "Credentials authorised");
                         auth = true;
                         break;
