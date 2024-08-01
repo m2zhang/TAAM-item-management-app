@@ -7,9 +7,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.firebase.database.DataSnapshot;
@@ -24,14 +28,12 @@ import java.util.List;
 public class SearchActivity extends AppCompatActivity implements OnItemSelectedListener {
 
     private EditText editTextLotNumber, editTextName, editTextCategory, editTextPeriod;
-
     private TextView textViewResults;
-
     private List<Item> itemList;
     private ItemAdapter itemAdapter;
-
-
     private DatabaseReference itemsRef;
+    private Button buttonView;
+    private Button buttonBack;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -50,6 +52,50 @@ public class SearchActivity extends AppCompatActivity implements OnItemSelectedL
         buttonSearch = findViewById(R.id.buttonSearch);
         textViewResults = findViewById(R.id.textViewResults);
         recyclerViewResults = findViewById(R.id.recyclerViewResults);
+        buttonView = findViewById(R.id.buttonView);
+        buttonBack = findViewById(R.id.buttonBack);
+
+        // Set up view button
+        buttonView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int selectedPosition = itemAdapter.getSelectedPosition();
+                if (selectedPosition != -1) {
+                    Item selectedItem = itemAdapter.getItem(selectedPosition);
+                    int lotNumber = selectedItem.getLotNumber();
+                    String name = selectedItem.getName();
+                    String category = selectedItem.getCategory();
+                    String period = selectedItem.getPeriod();
+                    String description = selectedItem.getDescription();
+                    String picture = selectedItem.getPicture();
+                    String video = selectedItem.getVideo();
+
+                    ViewFragment viewFragment = ViewFragment.newInstance(lotNumber, name, category, period, description, picture, video);
+                    replaceFragment(viewFragment);
+                }
+            }
+        });
+
+        // Set up back button
+        buttonBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+        // Handle back press using OnBackPressedCallback
+        OnBackPressedCallback callback = new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+                    getSupportFragmentManager().popBackStack();
+                } else {
+                    finish();
+                }
+            }
+        };
+        getOnBackPressedDispatcher().addCallback(this, callback);
 
         // Initialize item list and adapter
         itemList = new ArrayList<>();
@@ -78,14 +124,14 @@ public class SearchActivity extends AppCompatActivity implements OnItemSelectedL
 
         if (!isAnyFieldFilled) {
             // Fetch all data if no field is filled
-            fetchAllItems(lotNumber, name, category, period);
+            fetchAllItems();
         } else {
             // Fetch filtered data based on the filled fields
             fetchFilteredItems(lotNumber, name, category, period);
         }
     }
 
-    private void fetchAllItems(String lotNumber, String name, String category, String period) {
+    private void fetchAllItems() {
         Log.d("SearchActivity", "Fetching all items from database.");
         itemsRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -99,7 +145,7 @@ public class SearchActivity extends AppCompatActivity implements OnItemSelectedL
                     }
                 }
                 itemAdapter.notifyDataSetChanged();
-                updateResultsMessage(lotNumber, name, category, period);
+                updateResultsMessage("", "", "", "");
                 Log.d("SearchActivity", "Total items fetched: " + itemList.size());
             }
 
@@ -187,7 +233,11 @@ public class SearchActivity extends AppCompatActivity implements OnItemSelectedL
         // Handle item selection if needed
     }
 
-    public void goBackHome(View view) {
-        finish();
+    private void replaceFragment(Fragment fragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.fragment_container, fragment);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
     }
 }
