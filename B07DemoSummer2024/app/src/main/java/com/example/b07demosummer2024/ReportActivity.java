@@ -32,6 +32,7 @@ public class ReportActivity extends AppCompatActivity{
     private Button submitButtonCategory;
     private EditText editTextTextPeriod;
     private Button submitButtonPeriod;
+    private Button buttonBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +47,7 @@ public class ReportActivity extends AppCompatActivity{
         submitButtonCategory = findViewById(R.id.submitButtonCategory);
         editTextTextPeriod = findViewById(R.id.editTextTextPeriod);
         submitButtonPeriod = findViewById(R.id.submitButtonPeriod);
-
+        buttonBack = findViewById(R.id.buttonBack);
 
         // setOnClickListeners for simple functions
         submitButtonLot.setOnClickListener(new View.OnClickListener() {
@@ -71,6 +72,13 @@ public class ReportActivity extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 generatePdfPeriod();
+            }
+        });
+
+        buttonBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
             }
         });
 

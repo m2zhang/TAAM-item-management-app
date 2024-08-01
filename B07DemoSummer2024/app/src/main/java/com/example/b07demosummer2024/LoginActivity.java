@@ -79,7 +79,7 @@ public class LoginActivity extends AppCompatActivity {
                     progressBar.setVisibility(View.GONE);
                     if (isAuthenticated) {
                         // Authentication successful, make it go to admin page
-                        startActivity(new Intent(LoginActivity.this, HomeFragment.class));
+                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
                         finish();
                     } else {
                         // Authentication failed, show a toast or handle accordingly
