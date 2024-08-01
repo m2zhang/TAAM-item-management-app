@@ -17,7 +17,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseException;  // Add this import
+import com.google.firebase.database.DatabaseException;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
@@ -150,11 +150,15 @@ public class HomeFragment extends Fragment implements OnItemSelectedListener {
 
         progressBar.setVisibility(View.VISIBLE);
 
+        Log.i("Point111", "keep checking!!!!!!");
+
         itemsRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Log.i("HomeFragment", "DataSnapshot received");
                 itemList.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    Log.i("HomeFragment", "Processing snapshot: " + snapshot.getKey());
                     Item item = safeDataSnapshotToItem(snapshot);
                     if (item != null) {
                         itemList.add(item);
@@ -173,6 +177,7 @@ public class HomeFragment extends Fragment implements OnItemSelectedListener {
 
     private Item safeDataSnapshotToItem(DataSnapshot dataSnapshot) {
         try {
+            Log.i("HomeFragment", "Converting DataSnapshot to Item");
             Item item = dataSnapshot.getValue(Item.class);
 
             if (item != null) {
@@ -185,6 +190,7 @@ public class HomeFragment extends Fragment implements OnItemSelectedListener {
             }
 
             return item;
+
         } catch (DatabaseException | NumberFormatException e) {
             Log.e("HomeFragment", "Data conversion error: " + e.getMessage());
             return null;

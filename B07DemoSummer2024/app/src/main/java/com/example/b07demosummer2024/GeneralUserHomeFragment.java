@@ -49,7 +49,7 @@ public class GeneralUserHomeFragment extends Fragment implements OnItemSelectedL
         // Set up the RecyclerView
         recyclerView = view.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        // Initialize and set the adapter for RecyclerView
+        // Initialize and set adapter for RecyclerView
         itemList = new ArrayList<>();
         itemAdapter = new ItemAdapter(itemList, this);
 
