@@ -63,26 +63,26 @@
         <TextView
             android:id="@+id/textViewDescription2"
             android:layout_width="match_parent"
-            android:layout_height="250dp"
+            android:layout_height="220dp"
             android:text="Description" />
 
         <LinearLayout
             android:id="@+id/Media"
-            android:layout_width="match_parent"
-            android:layout_height="120dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:orientation="horizontal">
 
             <VideoView
                 android:id="@+id/videoView"
                 android:layout_width="213dp"
-                android:layout_height="120dp"
-                android:translationX="10dp" />
+                android:layout_height="120dp" />
 
             <ImageView
                 android:id="@+id/imageView3"
                 android:layout_width="160dp"
                 android:layout_height="120dp"
-                android:translationX="20dp"
+                android:adjustViewBounds="true"
+                android:cropToPadding="true"
                 tools:srcCompat="@tools:sample/avatars" />
         </LinearLayout>
 

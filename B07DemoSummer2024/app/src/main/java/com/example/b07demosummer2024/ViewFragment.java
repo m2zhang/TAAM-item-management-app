@@ -6,6 +6,7 @@ import androidx.annotation.Nullable;
 
 import android.os.Bundle;
 
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -15,6 +16,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.VideoView;
+import com.squareup.picasso.Picasso;
+
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import android.net.Uri;
+
 
 public class ViewFragment extends Fragment {
 
@@ -95,5 +104,37 @@ public class ViewFragment extends Fragment {
         textViewPeriod2.setText(Period);
         textCategory2.setText(Category);
         textViewDescription2.setText(Description);
+
+        // display media details if needed
+        if (Picture.startsWith("https://firebasestorage")) {
+            Picasso.get()
+                    .load(Picture)
+                    .placeholder(R.drawable.default_image)
+                    .error(R.drawable.default_image)
+                    .into(imageViewPicture);
+        } else {
+            imageViewPicture.setVisibility(View.GONE);
+        }
+
+        if (Video != null && Video.startsWith("https://firebasestorage") && !Video.isEmpty()) {
+            videoViewVideo.setVisibility(View.VISIBLE);
+            // Reference to the video in Firebase Storage
+            FirebaseStorage storage = FirebaseStorage.getInstance();
+            StorageReference videoRef = storage.getReferenceFromUrl(Video);
+
+            // Get download URL
+            videoRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                videoViewVideo.setVideoURI(uri);
+                videoViewVideo.setOnPreparedListener(mp -> {
+                    mp.setLooping(true);
+                    videoViewVideo.start();
+                });
+            }).addOnFailureListener(e -> {
+                videoViewVideo.setVisibility(View.GONE);
+            });
+        } else {
+            videoViewVideo.setVisibility(View.GONE);
+        }
+
     }
 }
