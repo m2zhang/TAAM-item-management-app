@@ -48,4 +48,7 @@ dependencies {
     implementation("com.squareup.picasso:picasso:2.71828")
     implementation("com.github.bumptech.glide:glide:3.7.0")
     annotationProcessor("com.github.bumptech.glide:compiler:4.15.1")
+    implementation("com.itextpdf:itext7-core:7.2.6")
+
+
 }
