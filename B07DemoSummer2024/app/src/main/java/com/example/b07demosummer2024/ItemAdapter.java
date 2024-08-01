@@ -75,9 +75,11 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
             }
         });
 
-        /*
+
         String pictureUrl = item.getPicture();
-        if (pictureUrl != null && !pictureUrl.isEmpty()) {
+// old condition: pictureUrl != null && !pictureUrl.isEmpty()
+        if (pictureUrl.startsWith("https://firebasestorage")) {
+            Log.i("Picture url apparently not empty", pictureUrl);
             Picasso.get()
                     .load(pictureUrl)
                     .placeholder(R.drawable.default_image)
@@ -87,16 +89,17 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
             holder.imageViewPicture.setVisibility(View.GONE);
         }
 
+
         String videoPath = item.getVideo();
 
-        if (videoPath != null && !videoPath.isEmpty()) {
+        if (videoPath != null && videoPath.startsWith("https://firebasestorage") && !videoPath.isEmpty()) {
         holder.videoViewVideo.setVisibility(View.VISIBLE);
 
         // Reference to the video in Firebase Storage
         FirebaseStorage storage = FirebaseStorage.getInstance();
-        StorageReference videoRef = storage.getReference().child(videoPath);
+        StorageReference videoRef = storage.getReferenceFromUrl(videoPath);
 
-        // Get the download URL
+        // Get download URL
         videoRef.getDownloadUrl().addOnSuccessListener(uri -> {
             holder.videoViewVideo.setVideoURI(uri);
             holder.videoViewVideo.setOnPreparedListener(mp -> {
@@ -104,7 +107,6 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
                 holder.videoViewVideo.start();
             });
         }).addOnFailureListener(e -> {
-            // Handle any errors
             holder.videoViewVideo.setVisibility(View.GONE);
         });
     } else {
@@ -112,7 +114,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
         holder.videoViewVideo.setVisibility(View.GONE);
     }
 
-    */
+
 
         holder.imageViewPicture.setImageResource(R.drawable.default_image);
         holder.videoViewVideo.setVisibility(View.GONE);

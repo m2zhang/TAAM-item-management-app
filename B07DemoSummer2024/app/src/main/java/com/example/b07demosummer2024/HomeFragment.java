@@ -137,6 +137,7 @@ public class HomeFragment extends Fragment implements OnItemSelectedListener {
             }
         });
 
+
         return view;
     }
 
