@@ -137,6 +137,15 @@ public class HomeFragment extends Fragment implements OnItemSelectedListener {
             }
         });
 
+        // Report button
+        buttonReport.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), ReportActivity.class);
+                startActivity(intent);
+            }
+        });
+
 
         return view;
     }
