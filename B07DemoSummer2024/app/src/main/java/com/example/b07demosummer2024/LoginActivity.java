@@ -8,29 +8,25 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
+import android.content.Intent;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseException;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QuerySnapshot;
 
+
+import java.util.concurrent.CompletableFuture;
 
 
 public class LoginActivity extends AppCompatActivity {
 
-    private DatabaseReference mDatabase;
     private EditText etUsername, etPassword;
     private Button btnLogin;
     private ProgressBar progressBar;
@@ -70,30 +66,32 @@ public class LoginActivity extends AppCompatActivity {
 
                 progressBar.setVisibility(View.VISIBLE);
 
-                if (authenticateLogin(username, password)){
+                authenticateLogin(username, password).thenAccept(isAuthenticated->{
                     progressBar.setVisibility(View.GONE);
-                    Toast.makeText(getApplicationContext(), "nice", Toast.LENGTH_SHORT).show();
-                    finish();
-                    return;
-                }
-                else{
-                    progressBar.setVisibility(View.GONE);
-                    //Toast.makeText(getApplicationContext(), "Incorrect Credentials", Toast.LENGTH_SHORT).show();
-                    return;
-                }
+                    if (isAuthenticated) {
+                        // Authentication successful, proceed to MainActivity
+                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                        finish();
+                    } else {
+                        // Authentication failed, show a toast or handle accordingly
+                        Toast.makeText(LoginActivity.this, "Incorrect Credentials.", Toast.LENGTH_SHORT).show();
+                    }
+                });
 
             }
         });
     }
 
-    private boolean authenticateLogin(String username, String password) {
+
+
+    private CompletableFuture<Boolean> authenticateLogin(String username, String password) {
+        CompletableFuture<Boolean> future = new CompletableFuture<>();
         Log.d("LoginActivity","Matching credentials from database.");
-        boolean auth = false;
-        User login = new User(username, password);
         itemsRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 User user;
+                boolean auth = false;
                 for(DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     user = null;
                     try {
@@ -106,19 +104,20 @@ public class LoginActivity extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), "working", Toast.LENGTH_SHORT).show();
                         Log.d("LoginActivity", "Credentials authorised");
                         auth = true;
-                        return;
+                        break;
                     }
 
                 }
+                future.complete(auth);
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 Log.e("LoginActivity","Database error: " + error.getMessage());
+                future.complete(false);
             }
         });
-        if(!auth) Toast.makeText(getApplicationContext(), "false", Toast.LENGTH_SHORT).show();
-        return auth;
+        return future;
     }
 
 
