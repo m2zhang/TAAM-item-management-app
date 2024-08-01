@@ -65,10 +65,13 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
         holder.radioButtonSelect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                int previousSelectedPosition = selectedPosition;
                 // Update the selected position
                 selectedPosition = holder.getAdapterPosition();
                 // Notify the adapter to refresh the list
-                notifyDataSetChanged();
+                // Notify the adapter to refresh only the updated items
+                notifyItemChanged(previousSelectedPosition);
+                notifyItemChanged(selectedPosition);
                 if (onItemSelectedListener != null) {
                     onItemSelectedListener.onItemSelected(item);
                 }
@@ -77,7 +80,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
 
 
         String pictureUrl = item.getPicture();
-// old condition: pictureUrl != null && !pictureUrl.isEmpty()
+        // old condition: pictureUrl != null && !pictureUrl.isEmpty()
         if (pictureUrl.startsWith("https://firebasestorage")) {
             Log.i("Picture url apparently not empty", pictureUrl);
             Picasso.get()
@@ -109,15 +112,15 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
         }).addOnFailureListener(e -> {
             holder.videoViewVideo.setVisibility(View.GONE);
         });
-    } else {
-        // Handle the case where the URL is empty or null
-        holder.videoViewVideo.setVisibility(View.GONE);
-    }
+        } else {
+            // Handle the case where the URL is empty or null
+            holder.videoViewVideo.setVisibility(View.GONE);
+        }
 
 
 
-        holder.imageViewPicture.setImageResource(R.drawable.default_image);
-        holder.videoViewVideo.setVisibility(View.GONE);
+        //holder.imageViewPicture.setImageResource(R.drawable.default_image);
+        //holder.videoViewVideo.setVisibility(View.GONE);
         Log.i("setting images + vid", "finish one time");
     }
 
