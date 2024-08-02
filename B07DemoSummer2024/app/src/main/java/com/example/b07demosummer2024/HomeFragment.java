@@ -101,6 +101,9 @@ public class HomeFragment extends Fragment implements OnItemSelectedListener {
                             .addToBackStack(null)
                             .commit();
                 }
+                else{
+                    Toast.makeText(getContext(), "Select an item!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -123,6 +126,9 @@ public class HomeFragment extends Fragment implements OnItemSelectedListener {
                             .replace(R.id.fragment_container, viewFragment)
                             .addToBackStack(null)
                             .commit();
+                }
+                else{
+                    Toast.makeText(getContext(), "Select an item!", Toast.LENGTH_SHORT).show();
                 }
             }
         });

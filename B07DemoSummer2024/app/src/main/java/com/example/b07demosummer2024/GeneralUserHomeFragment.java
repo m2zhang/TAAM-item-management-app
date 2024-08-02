@@ -94,6 +94,9 @@ public class GeneralUserHomeFragment extends Fragment implements OnItemSelectedL
                             .addToBackStack(null)
                             .commit();
                 }
+                else{
+                    Toast.makeText(getContext(), "Select an item!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
