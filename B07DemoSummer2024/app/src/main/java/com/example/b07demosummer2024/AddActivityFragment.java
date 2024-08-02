@@ -39,6 +39,8 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.lang.String;
 
 public class AddActivityFragment extends Fragment {
@@ -88,8 +90,9 @@ public class AddActivityFragment extends Fragment {
         selectImageVideoButton = view.findViewById(R.id.selectImageVideoButton);
 
         //set up categorySpinner
-        ArrayAdapter<CharSequence> categoryAdapter = ArrayAdapter.createFromResource(getContext(),
-                R.array.category_array, android.R.layout.simple_spinner_item);
+        String[] categoryArray = getResources().getStringArray(R.array.category_array);
+        ArrayAdapter<CharSequence> categoryAdapter = new ArrayAdapter<>(getContext(),
+                android.R.layout.simple_spinner_item, new ArrayList<>(Arrays.asList(categoryArray)));
         categoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         categorySpinner.setAdapter(categoryAdapter);
         categorySpinner.setSelection(0);
@@ -117,8 +120,9 @@ public class AddActivityFragment extends Fragment {
         });
 
         //set up periodSpinner
-        ArrayAdapter<CharSequence> periodAdapter = ArrayAdapter.createFromResource(getContext(),
-                R.array.period_array, android.R.layout.simple_spinner_item);
+        String[] periodArray = getResources().getStringArray(R.array.period_array);
+        ArrayAdapter<CharSequence> periodAdapter = new ArrayAdapter<>(getContext(),
+                android.R.layout.simple_spinner_item, new ArrayList<>(Arrays.asList(periodArray)));
         periodAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         periodSpinner.setAdapter(periodAdapter);
         periodSpinner.setSelection(0);
