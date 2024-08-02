@@ -17,6 +17,9 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <!-- RecyclerView -->
+
+    <!-- Bottom Navigation Fragment -->
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="0dp"
@@ -25,11 +28,11 @@
         android:padding="5dp"
         app:layout_constraintBottom_toTopOf="@id/fragment_page_nav"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/fragment_nav_bar"
+        app:layout_constraintVertical_bias="0.106"
         tools:listitem="@layout/item_layout" />
-
-    <!-- Bottom Navigation Fragment -->
 
     <include
         android:id="@+id/fragment_page_nav"
