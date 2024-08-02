@@ -60,17 +60,17 @@
 
     <EditText
         android:id="@+id/editTextTextLot"
-        android:layout_width="96dp"
-        android:layout_height="35dp"
+        android:layout_width="89dp"
+        android:layout_height="40dp"
         android:ems="10"
         android:inputType="text"
-        android:textSize="12sp"
+        android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.612"
+        app:layout_constraintHorizontal_bias="0.605"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.218" />
+        app:layout_constraintVertical_bias="0.219" />
 
     <TextView
         android:id="@+id/textView1"
@@ -293,10 +293,10 @@
     <EditText
         android:id="@+id/editTextTextName"
         android:layout_width="89dp"
-        android:layout_height="32dp"
+        android:layout_height="40dp"
         android:ems="10"
         android:inputType="text"
-        android:textSize="12sp"
+        android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.605"
@@ -307,10 +307,10 @@
     <EditText
         android:id="@+id/editTextTextCategory"
         android:layout_width="89dp"
-        android:layout_height="32dp"
+        android:layout_height="40dp"
         android:ems="10"
         android:inputType="text"
-        android:textSize="12sp"
+        android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.605"
@@ -321,10 +321,10 @@
     <EditText
         android:id="@+id/editTextTextCategoryDescPic"
         android:layout_width="89dp"
-        android:layout_height="32dp"
+        android:layout_height="40dp"
         android:ems="10"
-        android:textSize="12sp"
         android:inputType="text"
+        android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.605"
@@ -335,10 +335,10 @@
     <EditText
         android:id="@+id/editTextTextPeriod"
         android:layout_width="89dp"
-        android:layout_height="32dp"
+        android:layout_height="40dp"
         android:ems="10"
         android:inputType="text"
-        android:textSize="12sp"
+        android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.599"
@@ -349,10 +349,10 @@
     <EditText
         android:id="@+id/editTextTextPeriodDescPic"
         android:layout_width="89dp"
-        android:layout_height="32dp"
+        android:layout_height="40dp"
         android:ems="10"
-        android:textSize="12sp"
         android:inputType="text"
+        android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.599"
