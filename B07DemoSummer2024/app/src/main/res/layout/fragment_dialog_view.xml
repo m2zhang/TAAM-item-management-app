@@ -66,16 +66,17 @@
             android:layout_height="220dp"
             android:text="Description" />
 
-        <LinearLayout
+        <FrameLayout
             android:id="@+id/Media"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_gravity="center">
 
             <VideoView
                 android:id="@+id/videoView"
                 android:layout_width="213dp"
-                android:layout_height="120dp" />
+                android:layout_height="120dp"
+                android:layout_gravity="center" />
 
             <ImageView
                 android:id="@+id/imageView3"
@@ -83,8 +84,9 @@
                 android:layout_height="120dp"
                 android:adjustViewBounds="true"
                 android:cropToPadding="true"
+                android:layout_gravity="center"
                 tools:srcCompat="@tools:sample/avatars" />
-        </LinearLayout>
+        </FrameLayout>
 
     </LinearLayout>
 
