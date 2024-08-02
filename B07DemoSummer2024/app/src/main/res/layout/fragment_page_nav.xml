@@ -3,57 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent">
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/prevNext"
-        android:layout_width="411dp"
-        android:layout_height="52dp"
-        android:layout_marginTop="678dp"
-        app:itemHorizontalTranslationEnabled="false"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="clip_horizontal|center"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/buttonBack"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="2dp"
-                android:layout_weight="1"
-                android:backgroundTint="#000000"
-                android:minWidth="50dp"
-                android:padding="10dp"
-                android:text="Logout"
-                android:textSize="12sp"
-                app:cornerRadius="10dp"
-                app:iconPadding="0dp" />
-
-            <FrameLayout
-                android:layout_width="200dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1">
-
-            </FrameLayout>
-
-        </LinearLayout>
-
-    </com.google.android.material.bottomnavigation.BottomNavigationView>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/functions"
         android:layout_width="410dp"
         android:layout_height="55dp"
         android:layout_marginTop="623dp"
-        app:layout_constraintBottom_toTopOf="@+id/prevNext"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
