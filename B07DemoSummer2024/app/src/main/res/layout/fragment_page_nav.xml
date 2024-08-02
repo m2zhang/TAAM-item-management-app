@@ -8,7 +8,7 @@
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/functions"
-        android:layout_width="410dp"
+        android:layout_width="match_parent"
         android:layout_height="55dp"
         android:layout_marginTop="623dp"
         app:layout_constraintBottom_toBottomOf="parent"

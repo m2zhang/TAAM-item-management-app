@@ -25,6 +25,7 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_marginTop="67dp"
+        android:layout_marginBottom="55dp"
         android:padding="5dp"
         app:layout_constraintBottom_toTopOf="@id/fragment_page_nav_general_user"
         app:layout_constraintEnd_toEndOf="parent"
