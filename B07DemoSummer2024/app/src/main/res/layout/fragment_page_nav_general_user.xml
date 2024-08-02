@@ -7,7 +7,7 @@
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/prevNext"
-        android:layout_width="411dp"
+        android:layout_width="match_parent"
         android:layout_height="52dp"
         android:layout_marginTop="678dp"
         app:itemHorizontalTranslationEnabled="false"
@@ -20,7 +20,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="clip_horizontal|center"
+            android:background="@color/lightgrey"
             android:orientation="horizontal"
             android:padding="2dp"
             >
@@ -28,32 +28,32 @@
                 android:id="@+id/buttonView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="2dp"
+                android:layout_marginStart="2dp"
                 android:layout_weight="0"
-                android:backgroundTint="#000000"
+                android:backgroundTint="@color/darkgrey"
                 android:maxWidth="200dp"
-                android:minWidth="70dp"
+                android:minWidth="80dp"
                 android:padding="10dp"
                 android:text="View"
-                android:textSize="14sp" />
-
-            <FrameLayout
-                android:layout_width="220dp"
+                android:textSize="14sp"
+                app:cornerRadius="10dp"/>
+            <Space
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="0">
-
-            </FrameLayout>
+                android:layout_weight="2"
+                />
             <Button
                 android:id="@+id/buttonSearch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="2dp"
+                android:layout_marginEnd="2dp"
                 android:layout_weight="0"
-                android:backgroundTint="#000000"
+                android:backgroundTint="@color/darkgrey"
                 android:minWidth="80dp"
                 android:padding="10dp"
                 android:text="Search"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                app:cornerRadius="10dp" />
 
         </LinearLayout>
 

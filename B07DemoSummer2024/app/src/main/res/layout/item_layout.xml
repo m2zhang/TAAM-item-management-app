@@ -4,14 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/lightgrey"
+    android:layout_marginStart="8dp"
+    android:layout_marginEnd="8dp"
+    android:layout_marginBottom="8dp"
+    android:layout_marginTop="8dp"
     android:padding="8dp">
 
     <TextView
         android:id="@+id/textViewName"
-        android:layout_width="213dp"
-        android:layout_height="26dp"
+        android:layout_width="210dp"
+        android:layout_height="25dp"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="3dp"
         android:text="Name"
         android:textSize="18sp"
         android:textStyle="bold"
@@ -66,7 +70,6 @@
         android:id="@+id/radioButtonSelect"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:layout_marginTop="2dp"
         android:scaleX=".8"
         android:scaleY=".8"
         android:textSize="10sp"
@@ -76,24 +79,25 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <FrameLayout
-        android:layout_width="108dp"
+        android:layout_width="100dp"
         android:layout_height="80dp"
+        android:layout_gravity="center_vertical"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/textViewName"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="4dp">
+        android:layout_marginTop="8dp">
 
         <ImageView
             android:id="@+id/imageViewImage"
-            android:layout_width="105dp"
-            android:layout_height="79dp"
+            android:layout_width="100dp"
+            android:layout_height="80dp"
             tools:srcCompat="@tools:sample/avatars" />
 
         <VideoView
             android:id="@+id/videoViewVideo"
-            android:layout_width="105dp"
-            android:layout_height="79dp" />
+            android:layout_width="100dp"
+            android:layout_height="80dp" />
     </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

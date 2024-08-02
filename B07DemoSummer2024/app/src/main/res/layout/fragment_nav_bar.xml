@@ -6,8 +6,8 @@
     android:layout_height="wrap_content">
 
     <FrameLayout
-        android:layout_width="412dp"
-        android:layout_height="71dp"
+        android:layout_width="match_parent"
+        android:layout_height="75dp"
         android:layout_marginBottom="659dp"
         android:background="#000000"
         android:backgroundTint="#000000"
@@ -25,16 +25,17 @@
             android:textColorLink="#00919AEC"
             android:textSize="20sp"
             android:translationX="20dp"
-            android:translationY="15dp" />
+            android:translationY="18dp" />
 
         <TextView
             android:id="@+id/textViewLogo2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Admin"
+            android:textSize="10sp"
             android:textColor="#ECC891"
-            android:translationX="20dp"
-            android:translationY="35dp" />
+            android:translationX="23dp"
+            android:translationY="38dp" />
 
         <Button
             android:id="@+id/buttonBack"
@@ -44,6 +45,7 @@
             android:layout_marginEnd="16dp"
             android:backgroundTint="#000000"
             android:text="Logout"
+            android:textSize="20sp"
             android:translationX="320dp"
             android:translationY="-5dp" />
 
