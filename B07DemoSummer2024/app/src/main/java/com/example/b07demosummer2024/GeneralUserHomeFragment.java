@@ -129,10 +129,7 @@ public class GeneralUserHomeFragment extends Fragment implements OnItemSelectedL
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 itemList.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    //Log.i("Database", "Processing snapshot: " + snapshot.getKey());
                     Item item = snapshot.getValue(Item.class);
-                    //Log.i("Item picture", item.getPicture());
-                    //Log.i("Item LotNum", String.format("%d", item.getLotNumber()));
                     itemList.add(item);
                 }
                 itemAdapter.notifyDataSetChanged();
