@@ -32,7 +32,7 @@
                 android:backgroundTint="#000000"
                 android:minWidth="50dp"
                 android:padding="10dp"
-                android:text="Back"
+                android:text="Logout"
                 android:textSize="12sp"
                 app:cornerRadius="10dp"
                 app:iconPadding="0dp" />
