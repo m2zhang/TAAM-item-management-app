@@ -179,7 +179,7 @@ public class AddActivityFragment extends Fragment {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 String choice = newChoice.getText().toString().trim();
-                for (int index = 0; index < adapter.getCount(); i++){
+                for (int index = 0; index < adapter.getCount(); index++){
                     if (adapter.getItem(index).toString().equalsIgnoreCase(choice)){
                         Toast.makeText(getContext(), itemText + " already exists",
                                 Toast.LENGTH_SHORT).show();
@@ -199,6 +199,7 @@ public class AddActivityFragment extends Fragment {
                 dialogInterface.dismiss();
             }
         });
+        builder.show();
     }
 
     private void addItem(){
