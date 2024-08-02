@@ -35,31 +35,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // auth = FirebaseAuth.getInstance();
-
         if (savedInstanceState == null) {
             loadFragment(new HomeFragment());
         }
 
     }
-
-    /*
-    protected void onStart() {
-        super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
-        FirebaseUser currentUser = auth.getCurrentUser();
-        if (currentUser == null) {
-            // No user is signed in, redirect to LoginActivity
-            startActivity(new Intent(MainActivity.this, LoginActivity.class));
-            finish();
-        } else {
-            startActivity(new Intent(MainActivity.this, LoginActivity.class));
-            finish();
-            // User is signed in, you can proceed to the main content
-            // You can update the UI here or handle authenticated user logic
-        }
-
-     */
 
     private void loadFragment(Fragment fragment) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();

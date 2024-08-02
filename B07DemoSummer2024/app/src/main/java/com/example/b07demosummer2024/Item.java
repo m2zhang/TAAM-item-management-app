@@ -13,7 +13,7 @@ public class Item {
 
 
     public Item() {
-        // Default constructor required for calls to DataSnapshot.getValue(Item.class)
+        // Default constructor required for calls to DataSnapshot
     }
 
     public Item(Integer lotNumber, String name, String category, String period, String description,

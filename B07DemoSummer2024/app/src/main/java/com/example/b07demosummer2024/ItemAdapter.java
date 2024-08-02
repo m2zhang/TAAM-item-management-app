@@ -80,7 +80,6 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
 
 
         String pictureUrl = item.getPicture();
-        // old condition: pictureUrl != null && !pictureUrl.isEmpty()
         if (pictureUrl.startsWith("https://firebasestorage")) {
             Log.i("Picture url apparently not empty", pictureUrl);
             Picasso.get()
@@ -117,11 +116,6 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
             holder.videoViewVideo.setVisibility(View.GONE);
         }
 
-
-
-        //holder.imageViewPicture.setImageResource(R.drawable.default_image);
-        //holder.videoViewVideo.setVisibility(View.GONE);
-        Log.i("setting images + vid", "finish one time");
     }
 
     @Override
