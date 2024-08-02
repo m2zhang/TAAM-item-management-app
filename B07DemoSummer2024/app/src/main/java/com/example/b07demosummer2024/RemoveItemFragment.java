@@ -22,6 +22,9 @@ import com.google.firebase.database.ValueEventListener;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 
 import java.io.Serializable;
 
@@ -86,6 +89,38 @@ public class RemoveItemFragment extends Fragment {
         textViewDescription2.setText(Description);
 
         // displayItemDetails(lotNumber, textViewName2, textViewLotNum2, textViewPeriod2, textCategory2, textViewDescription2, imageViewPicture, videoViewVideo);
+
+        // display media details if needed
+        if (Picture.startsWith("https://firebasestorage")) {
+            Picasso.get()
+                    .load(Picture)
+                    .placeholder(R.drawable.default_image)
+                    .error(R.drawable.default_image)
+                    .into(imageViewPicture);
+        } else {
+            imageViewPicture.setVisibility(View.GONE);
+        }
+
+        if (Video != null && Video.startsWith("https://firebasestorage") && !Video.isEmpty()) {
+            videoViewVideo.setVisibility(View.VISIBLE);
+            // Reference to the video in Firebase Storage
+            FirebaseStorage storage = FirebaseStorage.getInstance();
+            StorageReference videoRef = storage.getReferenceFromUrl(Video);
+
+            // Get download URL
+            videoRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                videoViewVideo.setVideoURI(uri);
+                videoViewVideo.setOnPreparedListener(mp -> {
+                    mp.setLooping(true);
+                    videoViewVideo.start();
+                });
+            }).addOnFailureListener(e -> {
+                videoViewVideo.setVisibility(View.GONE);
+            });
+        } else {
+            videoViewVideo.setVisibility(View.GONE);
+        }
+
 
         Button buttonYes = view.findViewById(R.id.buttonYes);
         Button buttonCancel = view.findViewById(R.id.buttonCancel);

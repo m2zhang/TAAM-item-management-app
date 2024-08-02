@@ -41,6 +41,11 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:33.1.2"))
     implementation("com.google.firebase:firebase-database-ktx")
     implementation(libs.firebase.storage)
+    // Use Firebase BoM to manage Firebase dependencies
+    implementation(platform("com.google.firebase:firebase-bom:33.1.2"))
+    implementation("com.google.firebase:firebase-auth")
+    implementation("com.google.firebase:firebase-firestore")
+    //implementation("com.google.firebase:firebase-database-ktx")
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
@@ -48,4 +53,7 @@ dependencies {
     implementation("com.squareup.picasso:picasso:2.71828")
     implementation("com.github.bumptech.glide:glide:3.7.0")
     annotationProcessor("com.github.bumptech.glide:compiler:4.15.1")
+    implementation("com.itextpdf:itext7-core:7.2.6")
+    implementation("com.itextpdf:itext7-core:7.2.3")
+
 }

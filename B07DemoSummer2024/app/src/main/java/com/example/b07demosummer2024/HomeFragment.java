@@ -101,6 +101,9 @@ public class HomeFragment extends Fragment implements OnItemSelectedListener {
                             .addToBackStack(null)
                             .commit();
                 }
+                else{
+                    Toast.makeText(getContext(), "Select an item!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -124,6 +127,9 @@ public class HomeFragment extends Fragment implements OnItemSelectedListener {
                             .addToBackStack(null)
                             .commit();
                 }
+                else{
+                    Toast.makeText(getContext(), "Select an item!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -133,6 +139,15 @@ public class HomeFragment extends Fragment implements OnItemSelectedListener {
             public void onClick(View v) {
                 // Start AnotherActivity
                 Intent intent = new Intent(getActivity(), GeneralUserActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        // Report button
+        buttonReport.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), ReportActivity.class);
                 startActivity(intent);
             }
         });

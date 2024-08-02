@@ -53,6 +53,8 @@ public class GeneralUserHomeFragment extends Fragment implements OnItemSelectedL
         itemList = new ArrayList<>();
         itemAdapter = new ItemAdapter(itemList, this);
 
+        Button buttonAdmin = view.findViewById(R.id.buttonHome3);
+
         recyclerView.setAdapter(itemAdapter);
 
         progressBar = view.findViewById(R.id.progress_bar);
@@ -71,6 +73,7 @@ public class GeneralUserHomeFragment extends Fragment implements OnItemSelectedL
             }
         });
 
+        // View button
         buttonView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -91,6 +94,18 @@ public class GeneralUserHomeFragment extends Fragment implements OnItemSelectedL
                             .addToBackStack(null)
                             .commit();
                 }
+                else{
+                    Toast.makeText(getContext(), "Select an item!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        // Admin (login) button:
+        buttonAdmin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), LoginActivity.class);
+                startActivity(intent);
             }
         });
 
