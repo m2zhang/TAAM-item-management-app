@@ -1,10 +1,13 @@
 package com.example.b07demosummer2024;
 
+import android.app.AlertDialog;
 import android.content.ContentResolver;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -90,6 +93,28 @@ public class AddActivityFragment extends Fragment {
         categoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         categorySpinner.setAdapter(categoryAdapter);
         categorySpinner.setSelection(0);
+        categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if (i == 1){
+                    addNewItem(categoryAdapter, "Category",
+                            ((addNewItemCheckerStatus, newItem) -> {
+                        if (addNewItemCheckerStatus){
+                            categoryAdapter.add(newItem);
+                            categoryAdapter.notifyDataSetChanged();
+                            categorySpinner.setSelection(categoryAdapter.getPosition(newItem));
+                        }
+                        else {
+                            categorySpinner.setSelection(0);
+                        }
+                    }));
+
+                }
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+            }
+        });
 
         //set up periodSpinner
         ArrayAdapter<CharSequence> periodAdapter = ArrayAdapter.createFromResource(getContext(),
@@ -97,6 +122,28 @@ public class AddActivityFragment extends Fragment {
         periodAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         periodSpinner.setAdapter(periodAdapter);
         periodSpinner.setSelection(0);
+        periodSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if (i == 1){
+                    addNewItem(periodAdapter, "Period",
+                            ((addNewItemCheckerStatus, newItem) -> {
+                                if (addNewItemCheckerStatus){
+                                    periodAdapter.add(newItem);
+                                    periodAdapter.notifyDataSetChanged();
+                                    periodSpinner.setSelection(periodAdapter.getPosition(newItem));
+                                }
+                                else {
+                                    periodSpinner.setSelection(0);
+                                }
+                            }));
+
+                }
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+            }
+        });
 
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -119,6 +166,39 @@ public class AddActivityFragment extends Fragment {
             }
         });
         return view;
+    }
+
+    //for the spinners
+    private void addNewItem(ArrayAdapter<CharSequence> adapter, String itemText,
+                            final addNewItemChecker isNewCategoryAddedChecker){
+        final EditText newChoice = new EditText(getContext());
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setMessage("Add a new " + itemText + ":");
+        builder.setView(newChoice);
+        builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                String choice = newChoice.getText().toString().trim();
+                for (int index = 0; index < adapter.getCount(); i++){
+                    if (adapter.getItem(index).toString().equalsIgnoreCase(choice)){
+                        Toast.makeText(getContext(), itemText + " already exists",
+                                Toast.LENGTH_SHORT).show();
+                        isNewCategoryAddedChecker.result(false, null);
+                        dialogInterface.dismiss();
+                        return;
+                    }
+                }
+                isNewCategoryAddedChecker.result(true, choice);
+                dialogInterface.dismiss();
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                isNewCategoryAddedChecker.result(false, null);
+                dialogInterface.dismiss();
+            }
+        });
     }
 
     private void addItem(){
@@ -336,4 +416,8 @@ interface StorageResultChecker {
 
 interface MediaTypeChecker {
     void result(boolean mediaTypeCheckerStatus, String mediaType);
+}
+
+interface addNewItemChecker {
+    void result(boolean addNewItemCheckerStatus, String newItem);
 }

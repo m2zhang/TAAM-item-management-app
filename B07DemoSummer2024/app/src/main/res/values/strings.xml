@@ -17,6 +17,7 @@
 
     <string-array name="category_array">
         <item></item>
+        <item>New category</item>
         <item>Jade</item>
         <item>Paintings</item>
         <item>Calligraphy</item>
@@ -31,6 +32,7 @@
 
     <string-array name="period_array">
         <item></item>
+        <item>New period</item>
         <item>Xia</item>
         <item>Shang</item>
         <item>Zhou</item>
@@ -50,6 +52,7 @@
         <item>Ming</item>
         <item>Qing</item>
         <item>Modern</item>
+
     </string-array>
 
 
