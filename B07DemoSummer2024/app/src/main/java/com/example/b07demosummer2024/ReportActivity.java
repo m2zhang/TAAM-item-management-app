@@ -94,7 +94,7 @@ public class ReportActivity extends AppCompatActivity{
 
         try {
             // Create a PdfWriter
-            String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath();
+            String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath();
             File file = new File(path, "Report.pdf");
             PdfWriter writer = new PdfWriter(file);
 
@@ -126,7 +126,7 @@ public class ReportActivity extends AppCompatActivity{
 
         try {
             // Create a PdfWriter
-            String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath();
+            String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath();
             File file = new File(path, "Report.pdf");
             PdfWriter writer = new PdfWriter(file);
 
@@ -158,7 +158,7 @@ public class ReportActivity extends AppCompatActivity{
 
         try {
             // Create a PdfWriter
-            String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath();
+            String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath();
             File file = new File(path, "Report.pdf");
             PdfWriter writer = new PdfWriter(file);
 
@@ -190,7 +190,7 @@ public class ReportActivity extends AppCompatActivity{
 
         try {
             // Create a PdfWriter
-            String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath();
+            String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath();
             File file = new File(path, "Report.pdf");
             PdfWriter writer = new PdfWriter(file);
 
