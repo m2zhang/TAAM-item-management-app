@@ -164,6 +164,9 @@ public class ReportActivity extends AppCompatActivity {
                         PdfDocument pdf = new PdfDocument(writer);
                         Document document = new Document(pdf);
 
+                        int itemsCount = (int) snapshot.getChildrenCount();
+                        AtomicInteger pendingImages = new AtomicInteger(itemsCount);
+
                         document.add(new Paragraph("Report for Lot Number: " + lotNumber));
 
                         for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
@@ -175,21 +178,20 @@ public class ReportActivity extends AppCompatActivity {
                                 document.add(new Paragraph("Period: " + item.getPeriod()));
                                 document.add(new Paragraph("Description: " + item.getDescription()));
 
-
-                                // picture not loading properly
-                                /* if (item.getPicture() != null && !item.getPicture().isEmpty()) {
-                                    ImageData imageData = ImageDataFactory.create(item.getPicture());
-                                    Image image = new Image(imageData);
-                                    document.add(image);
+                                if (item.getPicture() != null && !item.getPicture().isEmpty()) {
+                                    loadImageAndAddToDocument(item.getPicture(), document, pendingImages);
                                 } else {
                                     document.add(new Paragraph("No picture found"));
-                                }*/
+                                    if (pendingImages.decrementAndGet() == 0) {
+                                        document.close();
+                                    }
+                                }
 
 
                             }
                         }
 
-                        document.close();
+                        //document.close(); ** DON'T CLOSE TOO EARLY.
                         Toast.makeText(ReportActivity.this, "PDF generated at: " + file.getAbsolutePath(), Toast.LENGTH_LONG).show();
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -232,6 +234,9 @@ public class ReportActivity extends AppCompatActivity {
                         PdfDocument pdf = new PdfDocument(writer);
                         Document document = new Document(pdf);
 
+                        int itemsCount = (int) snapshot.getChildrenCount();
+                        AtomicInteger pendingImages = new AtomicInteger(itemsCount);
+
                         document.add(new Paragraph("Report for Item Name: " + itemName));
 
                         for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
@@ -243,18 +248,18 @@ public class ReportActivity extends AppCompatActivity {
                                 document.add(new Paragraph("Period: " + item.getPeriod()));
                                 document.add(new Paragraph("Description: " + item.getDescription()));
 
-                                // picture not loading properly
-                                /*if (item.getPicture() != null && !item.getPicture().isEmpty()) {
-                                    ImageData imageData = ImageDataFactory.create(item.getPicture());
-                                    Image image = new Image(imageData);
-                                    document.add(image);
+                                if (item.getPicture() != null && !item.getPicture().isEmpty()) {
+                                    loadImageAndAddToDocument(item.getPicture(), document, pendingImages);
                                 } else {
                                     document.add(new Paragraph("No picture found"));
-                                }*/
+                                    if (pendingImages.decrementAndGet() == 0) {
+                                        document.close();
+                                    }
+                                }
                             }
                         }
 
-                        document.close();
+                        //document.close(); ** DON'T CLOSE TOO EARLY.
                         Toast.makeText(ReportActivity.this, "PDF generated at: " + file.getAbsolutePath(), Toast.LENGTH_LONG).show();
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -295,6 +300,9 @@ public class ReportActivity extends AppCompatActivity {
                         PdfDocument pdf = new PdfDocument(writer);
                         Document document = new Document(pdf);
 
+                        int itemsCount = (int) snapshot.getChildrenCount();
+                        AtomicInteger pendingImages = new AtomicInteger(itemsCount);
+
                         document.add(new Paragraph("Report for Category: " + itemCategory));
 
                         for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
@@ -306,18 +314,18 @@ public class ReportActivity extends AppCompatActivity {
                                 document.add(new Paragraph("Period: " + item.getPeriod()));
                                 document.add(new Paragraph("Description: " + item.getDescription()));
 
-                                // picture not loading properly
-                                /*if (item.getPicture() != null && !item.getPicture().isEmpty()) {
-                                    ImageData imageData = ImageDataFactory.create(item.getPicture());
-                                    Image image = new Image(imageData);
-                                    document.add(image);
+                                if (item.getPicture() != null && !item.getPicture().isEmpty()) {
+                                    loadImageAndAddToDocument(item.getPicture(), document, pendingImages);
                                 } else {
                                     document.add(new Paragraph("No picture found"));
-                                }*/
+                                    if (pendingImages.decrementAndGet() == 0) {
+                                        document.close();
+                                    }
+                                }
                             }
                         }
 
-                        document.close();
+                        //document.close(); ** DON'T CLOSE TOO EARLY.
                         Toast.makeText(ReportActivity.this, "PDF generated at: " + file.getAbsolutePath(), Toast.LENGTH_LONG).show();
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -376,14 +384,6 @@ public class ReportActivity extends AppCompatActivity {
                                         document.close();
                                     }
                                 }
-                                // picture not loading properly
-                                /*if (item.getPicture() != null && !item.getPicture().isEmpty()) {
-                                    ImageData imageData = ImageDataFactory.create(item.getPicture());
-                                    Image image = new Image(imageData);
-                                    document.add(image);
-                                } else {
-                                    document.add(new Paragraph("No picture found"));
-                                }*/
                             }
                         }
 
@@ -429,6 +429,9 @@ public class ReportActivity extends AppCompatActivity {
                         PdfDocument pdf = new PdfDocument(writer);
                         Document document = new Document(pdf);
 
+                        int itemsCount = (int) snapshot.getChildrenCount();
+                        AtomicInteger pendingImages = new AtomicInteger(itemsCount);
+
                         document.add(new Paragraph("Report for Period: " + itemPeriod));
 
                         for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
@@ -440,18 +443,19 @@ public class ReportActivity extends AppCompatActivity {
                                 document.add(new Paragraph("Period: " + item.getPeriod()));
                                 document.add(new Paragraph("Description: " + item.getDescription()));
 
-                                // picture not loading properly
-                                /*if (item.getPicture() != null && !item.getPicture().isEmpty()) {
-                                    ImageData imageData = ImageDataFactory.create(item.getPicture());
-                                    Image image = new Image(imageData);
-                                    document.add(image);
+                                if (item.getPicture() != null && !item.getPicture().isEmpty()) {
+                                    loadImageAndAddToDocument(item.getPicture(), document, pendingImages);
                                 } else {
                                     document.add(new Paragraph("No picture found"));
-                                }*/
+                                    if (pendingImages.decrementAndGet() == 0) {
+                                        document.close();
+                                    }
+                                }
+
                             }
                         }
 
-                        document.close();
+                        //document.close(); ** DON'T CLOSE TOO EARLY.
                         Toast.makeText(ReportActivity.this, "PDF generated at: " + file.getAbsolutePath(), Toast.LENGTH_LONG).show();
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -491,6 +495,9 @@ public class ReportActivity extends AppCompatActivity {
                         PdfDocument pdf = new PdfDocument(writer);
                         Document document = new Document(pdf);
 
+                        int itemsCount = (int) snapshot.getChildrenCount();
+                        AtomicInteger pendingImages = new AtomicInteger(itemsCount);
+
                         document.add(new Paragraph("Report for Period with Description and Picture only: " + itemPeriod));
 
                         for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
@@ -499,16 +506,17 @@ public class ReportActivity extends AppCompatActivity {
                                 document.add(new Paragraph("Lot Number: " + item.getLotNumber()));
                                 document.add(new Paragraph("Description: " + item.getDescription()));
 
-                                // picture not loading properly
-                                /*if (item.getPicture() != null && !item.getPicture().isEmpty()) {
-                                    ImageData imageData = ImageDataFactory.create(item.getPicture());
-                                    Image image = new Image(imageData);
-                                    document.add(image);
+                                if (item.getPicture() != null && !item.getPicture().isEmpty()) {
+                                    loadImageAndAddToDocument(item.getPicture(), document, pendingImages);
                                 } else {
                                     document.add(new Paragraph("No picture found"));
-                                }*/
+                                    if (pendingImages.decrementAndGet() == 0) {
+                                        document.close();
+                                    }
+                                }
                             }
                         }
+
                         Toast.makeText(ReportActivity.this, "PDF generated at: " + file.getAbsolutePath(), Toast.LENGTH_LONG).show();
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -542,6 +550,9 @@ public class ReportActivity extends AppCompatActivity {
                         PdfDocument pdf = new PdfDocument(writer);
                         Document document = new Document(pdf);
 
+                        int itemsCount = (int) snapshot.getChildrenCount();
+                        AtomicInteger pendingImages = new AtomicInteger(itemsCount);
+
                         document.add(new Paragraph("Report for All Items"));
 
                         for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
@@ -553,16 +564,18 @@ public class ReportActivity extends AppCompatActivity {
                                 document.add(new Paragraph("Period: " + item.getPeriod()));
                                 document.add(new Paragraph("Description: " + item.getDescription()));
 
-                                // Picture loading (uncomment and fix this section if needed)
-                            /*if (item.getPicture() != null && !item.getPicture().isEmpty()) {
-                                new DownloadImageTask(document).execute(item.getPicture());
-                            } else {
-                                document.add(new Paragraph("No picture found"));
-                            }*/
+                                if (item.getPicture() != null && !item.getPicture().isEmpty()) {
+                                    loadImageAndAddToDocument(item.getPicture(), document, pendingImages);
+                                } else {
+                                    document.add(new Paragraph("No picture found"));
+                                    if (pendingImages.decrementAndGet() == 0) {
+                                        document.close();
+                                    }
+                                }
                             }
                         }
 
-                        document.close();
+                        //document.close(); ** DON'T CLOSE TOO EARLY.
                         Toast.makeText(ReportActivity.this, "PDF generated at: " + file.getAbsolutePath(), Toast.LENGTH_LONG).show();
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -595,6 +608,9 @@ public class ReportActivity extends AppCompatActivity {
                         PdfDocument pdf = new PdfDocument(writer);
                         Document document = new Document(pdf);
 
+                        int itemsCount = (int) snapshot.getChildrenCount();
+                        AtomicInteger pendingImages = new AtomicInteger(itemsCount);
+
                         document.add(new Paragraph("Report for All Items with Description and Picture only"));
 
                         for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
@@ -603,16 +619,18 @@ public class ReportActivity extends AppCompatActivity {
                                 document.add(new Paragraph("Lot Number: " + item.getLotNumber()));
                                 document.add(new Paragraph("Description: " + item.getDescription()));
 
-                                // Picture loading (uncomment and fix this section if needed)
-                            /*if (item.getPicture() != null && !item.getPicture().isEmpty()) {
-                                new DownloadImageTask(document).execute(item.getPicture());
-                            } else {
-                                document.add(new Paragraph("No picture found"));
-                            }*/
+                                if (item.getPicture() != null && !item.getPicture().isEmpty()) {
+                                    loadImageAndAddToDocument(item.getPicture(), document, pendingImages);
+                                } else {
+                                    document.add(new Paragraph("No picture found"));
+                                    if (pendingImages.decrementAndGet() == 0) {
+                                        document.close();
+                                    }
+                                }
                             }
                         }
 
-                        document.close();
+                        //document.close(); ** DON'T CLOSE TOO EARLY.
                         Toast.makeText(ReportActivity.this, "PDF generated at: " + file.getAbsolutePath(), Toast.LENGTH_LONG).show();
                     } catch (IOException e) {
                         e.printStackTrace();
