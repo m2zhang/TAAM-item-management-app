@@ -219,7 +219,7 @@ public class AddActivityFragment extends Fragment {
         //check if all of the fields are filled in
         //lot number cannot be a number
         if (lotNumberUnparsed.isEmpty() || name.isEmpty() || category.isEmpty() || period.isEmpty()
-                || description.isEmpty() || imageVideo == null){
+                || description.isEmpty() ){
             Toast.makeText(getContext(), "Please fill in all information",
                     Toast.LENGTH_SHORT).show();
             return;
@@ -239,44 +239,52 @@ public class AddActivityFragment extends Fragment {
                         Toast.LENGTH_SHORT).show();
             }
             else {
-                //check if the image/video uploaded successfully to storage
-                addItemToStorage((uploadSucceedStatus, imageVideoReference) -> {
-                    if (uploadSucceedStatus){
-                        //add data to database
+                if (imageVideo == null) {
+                    // No media selected, add item directly to database
+                    addItemToDatabase(lotNumber, name, category, period, description, "", "");
+                    resetInformation();
+                }
+                else {
+                    //check if the image/video uploaded successfully to storage
+                    addItemToStorage((uploadSucceedStatus, imageVideoReference) -> {
+                        if (uploadSucceedStatus){
+                            //add data to database
                         /*
                                 addItemToDatabase(lotNumberUnparsed, name, category, period, description,
                                         imageVideoReference);
                                 resetInformation();
 
                          */
-                        checkMediaType(imageVideoReference, (mediaTypeCheckerStatus, mediaType) -> {
-                            if (mediaTypeCheckerStatus){
-                                if (mediaType.equals(IMAGE)){
-                                    addItemToDatabase(lotNumber, name, category, period, description,
-                                            imageVideoReference, "");
-                                    resetInformation();
-                                }
-                                else if(mediaType.equals(VIDEO)) {
-                                    addItemToDatabase(lotNumber, name, category, period, description,
-                                            "", imageVideoReference);
-                                    resetInformation();
+                            checkMediaType(imageVideoReference, (mediaTypeCheckerStatus, mediaType) -> {
+                                if (mediaTypeCheckerStatus){
+                                    if (mediaType.equals(IMAGE)){
+                                        addItemToDatabase(lotNumber, name, category, period, description,
+                                                imageVideoReference, "");
+                                        resetInformation();
+                                    }
+                                    else if(mediaType.equals(VIDEO)) {
+                                        addItemToDatabase(lotNumber, name, category, period, description,
+                                                "", imageVideoReference);
+                                        resetInformation();
+                                    }
+                                    else {
+                                        Toast.makeText(getContext(), "Unknown Error, Should not happen." +
+                                                "Process aborted", Toast.LENGTH_SHORT).show();
+                                    }
                                 }
                                 else {
-                                    Toast.makeText(getContext(), "Unknown Error, Should not happen." +
+                                    Toast.makeText(getContext(), "Image/Video type detection failed. " +
                                             "Process aborted", Toast.LENGTH_SHORT).show();
                                 }
-                            }
-                            else {
-                                Toast.makeText(getContext(), "Image/Video type detection failed. " +
-                                        "Process aborted", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                    }
-                    else {
-                        Toast.makeText(getContext(), "Image/Video upload failed. " +
-                                        "Process aborted", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                            });
+                        }
+                        else {
+                            Toast.makeText(getContext(), "Image/Video upload failed. " +
+                                    "Process aborted", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+
             }
         });
     }
