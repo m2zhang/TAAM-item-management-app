@@ -354,6 +354,7 @@ public class ReportActivity extends AppCompatActivity {
                         for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                             Item item = dataSnapshot.getValue(Item.class);
                             if (item != null) {
+                                document.add(new Paragraph("Lot Number: " + item.getLotNumber()));
                                 document.add(new Paragraph("Description: " + item.getDescription()));
 
                                 // picture not loading properly
@@ -476,6 +477,7 @@ public class ReportActivity extends AppCompatActivity {
                         for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                             Item item = dataSnapshot.getValue(Item.class);
                             if (item != null) {
+                                document.add(new Paragraph("Lot Number: " + item.getLotNumber()));
                                 document.add(new Paragraph("Description: " + item.getDescription()));
 
                                 // picture not loading properly
@@ -581,6 +583,7 @@ public class ReportActivity extends AppCompatActivity {
                         for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                             Item item = dataSnapshot.getValue(Item.class);
                             if (item != null) {
+                                document.add(new Paragraph("Lot Number: " + item.getLotNumber()));
                                 document.add(new Paragraph("Description: " + item.getDescription()));
 
                                 // Picture loading (uncomment and fix this section if needed)
