@@ -38,7 +38,7 @@
             android:background="@color/transparent"
             android:text="Admin"
             android:textSize="20sp"
-            android:translationX="320dp"
+            android:translationX="280dp"
             android:translationY="-5dp" />
 
     </FrameLayout>
