@@ -2,8 +2,11 @@ package com.example.b07demosummer2024;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Environment;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,11 +18,15 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.itextpdf.io.image.ImageData;
 import com.itextpdf.io.image.ImageDataFactory;
+import com.itextpdf.io.source.ByteArrayOutputStream;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.Image;
 import com.itextpdf.layout.element.Paragraph;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -27,6 +34,7 @@ import androidx.core.content.ContextCompat;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class ReportActivity extends AppCompatActivity {
 
@@ -349,6 +357,9 @@ public class ReportActivity extends AppCompatActivity {
                         PdfDocument pdf = new PdfDocument(writer);
                         Document document = new Document(pdf);
 
+                        int itemsCount = (int) snapshot.getChildrenCount();
+                        AtomicInteger pendingImages = new AtomicInteger(itemsCount);
+
                         document.add(new Paragraph("Report for Category with Description and Picture only: " + itemCategory));
 
                         for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
@@ -357,6 +368,14 @@ public class ReportActivity extends AppCompatActivity {
                                 document.add(new Paragraph("Lot Number: " + item.getLotNumber()));
                                 document.add(new Paragraph("Description: " + item.getDescription()));
 
+                                if (item.getPicture() != null && !item.getPicture().isEmpty()) {
+                                    loadImageAndAddToDocument(item.getPicture(), document, pendingImages);
+                                } else {
+                                    document.add(new Paragraph("No picture found"));
+                                    if (pendingImages.decrementAndGet() == 0) {
+                                        document.close();
+                                    }
+                                }
                                 // picture not loading properly
                                 /*if (item.getPicture() != null && !item.getPicture().isEmpty()) {
                                     ImageData imageData = ImageDataFactory.create(item.getPicture());
@@ -368,7 +387,7 @@ public class ReportActivity extends AppCompatActivity {
                             }
                         }
 
-                        document.close();
+                        //document.close(); ** DON'T CLOSE TOO EARLY.
                         Toast.makeText(ReportActivity.this, "PDF generated at: " + file.getAbsolutePath(), Toast.LENGTH_LONG).show();
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -490,8 +509,6 @@ public class ReportActivity extends AppCompatActivity {
                                 }*/
                             }
                         }
-
-                        document.close();
                         Toast.makeText(ReportActivity.this, "PDF generated at: " + file.getAbsolutePath(), Toast.LENGTH_LONG).show();
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -611,6 +628,52 @@ public class ReportActivity extends AppCompatActivity {
                 Toast.makeText(ReportActivity.this, "Database error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void loadImageAndAddToDocument(String url, Document document, AtomicInteger pendingImages) {
+        if (url.isEmpty()){
+            if (pendingImages.decrementAndGet() == 0){
+                document.close();
+            }
+        }
+        else {
+            Picasso.get().load(url).into(new Target() {
+                @Override
+                public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                    try {
+                        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                        byte[] byteArray = stream.toByteArray();
+                        Image image = new Image(com.itextpdf.io.image.ImageDataFactory.create(byteArray));
+                        document.add(image);
+
+                        Log.i("Pic check", "about to close the document");
+
+                        if(pendingImages.decrementAndGet() == 0){
+                            document.close();
+                        }
+
+                    } catch (Exception e) {
+                        Log.e("iTextError", "Error adding image to PDF: " + e.getMessage());
+                        if (pendingImages.decrementAndGet() == 0) {
+                            document.close();
+                        }
+                    }
+                }
+
+                @Override
+                public void onBitmapFailed(Exception e, Drawable errorDrawable) {
+                    Log.e("PicassoError", "Error loading image: " + e.getMessage());
+                    if (pendingImages.decrementAndGet() == 0) {
+                        document.close();
+                    }
+                }
+
+                @Override
+                public void onPrepareLoad(Drawable placeHolderDrawable) {
+                }
+            });
+        }
     }
 
 
