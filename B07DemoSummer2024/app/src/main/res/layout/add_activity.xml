@@ -8,8 +8,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
-        android:layout_width="411dp"
-        android:layout_height="85dp"
+        android:layout_width="match_parent"
+        android:layout_height="75dp"
         android:background="#000000"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -21,12 +21,13 @@
             android:id="@+id/logoutTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="16dp"
             android:text="Logout"
-            android:textColor="#FFFFFF"
-            android:textSize="18sp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:textColor="@color/white"
+            android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.886"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -34,14 +35,31 @@
             android:id="@+id/homeTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Home"
-            android:textColor="#FFFFFF"
-            android:textSize="18sp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginStart="22dp"
+            android:layout_marginTop="16dp"
+            android:text="TAAM"
+            android:textStyle="bold"
+            android:textColor="@color/yellow"
+            android:textSize="20sp"
+
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.65"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:paddingLeft="5dp"
+            android:text="Add"
+            android:textColor="@color/yellow"
+            android:textSize="10sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.06"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/homeTextView" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -50,10 +68,10 @@
         android:layout_height="644dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.977">
+        app:layout_constraintVertical_bias="0.3">
 
 
         <TextView
@@ -61,6 +79,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Add New Collection"
+            android:textStyle="bold"
             android:textAlignment="center"
             android:textSize="24sp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -69,6 +88,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.073" />
+
 
         <TextView
             android:id="@+id/lotNumberTextView"
@@ -154,6 +174,7 @@
             android:layout_height="41dp"
             android:ems="10"
             android:inputType="text"
+            android:background="@color/lightgrey"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.771"
@@ -167,6 +188,7 @@
             android:layout_height="41dp"
             android:ems="10"
             android:inputType="text"
+            android:background="@color/lightgrey"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.771"
@@ -181,6 +203,7 @@
             android:ems="10"
             android:gravity="start|top"
             android:inputType="textMultiLine"
+            android:background="@color/lightgrey"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.771"
@@ -193,24 +216,28 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Submit"
+            android:backgroundTint="@color/darkgrey"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.85"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.926" />
+            app:layout_constraintVertical_bias="0.925"
+            tools:cornerRadius="5dp"/>
 
         <Button
             android:id="@+id/cancelButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Cancel"
+            android:backgroundTint="@color/darkgrey"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.127"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.926" />
+            app:layout_constraintVertical_bias="0.926"
+            tools:cornerRadius="5dp"/>
 
         <Spinner
             android:id="@+id/categorySpinner"
@@ -241,12 +268,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Select Media"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.574"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.819" />
+            android:backgroundTint="@color/darkgrey"
+            app:layout_constraintBottom_toBottomOf="@id/pictureVideoTextView"
+            app:layout_constraintEnd_toEndOf="@id/descriptionEditText"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="@id/descriptionEditText"
+            app:layout_constraintTop_toTopOf="@id/pictureVideoTextView"
+            app:layout_constraintVertical_bias="0.5"
+            tools:cornerRadius="5dp"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

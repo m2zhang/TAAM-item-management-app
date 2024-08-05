@@ -27,30 +27,28 @@
 
             <Button
                 android:id="@+id/buttonView"
-                android:layout_width="60dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="2dp"
-                android:layout_weight="0"
+                android:layout_weight="0.2"
                 android:backgroundTint="@color/darkgrey"
-                android:maxWidth="100dp"
-                android:minWidth="80dp"
-                android:paddingLeft="2dp"
-                android:paddingRight="2dp"
                 android:text="View"
                 android:textSize="12sp"
+                android:maxLines="1"
+                android:padding="0.1dp"
                 app:cornerRadius="10dp" />
 
             <Button
                 android:id="@+id/buttonSearch"
-                android:layout_width="93dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="2dp"
-                android:layout_weight="0"
+                android:layout_weight="0.2"
                 android:backgroundTint="@color/darkgrey"
-                android:maxWidth="95dp"
-                android:minWidth="80dp"
                 android:text="Search"
                 android:textSize="12sp"
+                android:maxLines="1"
+                android:padding="0.1dp"
                 app:cornerRadius="10dp" />
 
             <Button
@@ -58,36 +56,37 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="2dp"
-                android:layout_weight="0"
+                android:layout_weight="0.2"
                 android:backgroundTint="@color/darkgrey"
-                android:minWidth="70dp"
                 android:text="Add"
                 android:textSize="12sp"
+                android:maxLines="1"
+                android:padding="0.1dp"
                 app:cornerRadius="10dp" />
 
             <Button
                 android:id="@+id/buttonRemove"
-                android:layout_width="93dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="2dp"
-                android:layout_weight="0"
+                android:layout_weight="0.2"
                 android:backgroundTint="@color/darkgrey"
-                android:maxWidth="100dp"
-                android:minWidth="80dp"
                 android:text="Remove"
                 android:textSize="12sp"
+                android:maxLines="1"
+                android:padding="0.1dp"
                 app:cornerRadius="10dp" />
 
             <Button
                 android:id="@+id/buttonReport"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="0"
+                android:layout_weight="0.2"
                 android:backgroundTint="@color/darkgrey"
-                android:maxWidth="200dp"
-                android:minWidth="80dp"
                 android:text="Report"
                 android:textSize="12sp"
+                android:maxLines="1"
+                android:padding="0.1dp"
                 app:cornerRadius="10dp" />
         </LinearLayout>
 

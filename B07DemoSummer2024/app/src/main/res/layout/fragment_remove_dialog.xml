@@ -100,30 +100,33 @@
             android:orientation="horizontal"
             android:padding="16dp"
             android:gravity="center_horizontal">
-
-            <Button
-                android:id="@+id/buttonYes"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginEnd="10dp"
-                android:background="@drawable/rounded_button"
-                android:text="Yes"
-                android:textColor="#FFFFFF"
-                android:textAllCaps="false"
-                />
-
             <Button
                 android:id="@+id/buttonCancel"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:layout_marginStart="10dp"
-                android:background="@drawable/rounded_button"
                 android:text="Cancel"
                 android:textColor="#FFFFFF"
                 android:textAllCaps="false"
+                android:layout_marginEnd="10dp"
+                android:backgroundTint="@color/darkgrey"
+                tools:cornerRadius="5dp"
                 />
+
+            <Button
+                android:id="@+id/buttonYes"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:backgroundTint="@color/darkgrey"
+                android:text="Confirm"
+                android:textColor="#FFFFFF"
+                android:textAllCaps="false"
+                tools:cornerRadius="5dp"
+                />
+
+
         </LinearLayout>
 
     </LinearLayout>

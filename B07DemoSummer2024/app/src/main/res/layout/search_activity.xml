@@ -8,85 +8,78 @@
     tools:context=".SearchActivity">
 
     <!-- Navigation Bar -->
-    <LinearLayout
+    <FrameLayout
         android:id="@+id/navigationBar"
-        android:layout_width="0dp"
-        android:layout_height="73dp"
+        android:layout_width="match_parent"
+        android:layout_height="75dp"
+        android:layout_marginBottom="659dp"
         android:background="#000000"
-        android:orientation="horizontal"
-        android:padding="16dp"
+        android:backgroundTint="#000000"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.00">
 
         <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="TAAM"
-            android:textColor="#FFA500"
-            android:textSize="18sp"
-            android:textStyle="bold" />
-
-        <TextView
+            android:id="@+id/taamTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingEnd="10dp"
-            android:text="Search"
-            android:textSize="18sp"
+            android:text="TAAM"
+            android:textColor="#ECC891"
+            android:textColorLink="#00919AEC"
+            android:textSize="20sp"
             android:textStyle="bold"
-            android:textColor="#FFFFFF" />
+            android:translationX="20dp"
+            android:translationY="18dp" />
 
-    </LinearLayout>
+        <TextView
+            android:id="@+id/textViewLogo2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Search"
+            android:textColor="#ECC891"
+            android:textSize="10sp"
+            android:translationX="23dp"
+            android:translationY="38dp" />
 
-    <Button
-        android:id="@+id/buttonBack"
-        android:layout_width="wrap_content"
-        android:layout_height="36dp"
-        android:layout_marginTop="24dp"
-        android:background="@color/buttonColor"
-        android:text="Back"
-        android:textColor="@android:color/white"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.124"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/navigationBar"
-        android:onClick="goBackHome" />
+        <Button
+            android:id="@+id/buttonBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:backgroundTint="@color/transparent"
+            android:text="Back"
+            android:textSize="20sp" />
+
+    </FrameLayout>
 
     <EditText
         android:id="@+id/editTextLotNumber"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="50dp"
         android:hint="Lot#"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.512"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintVertical_bias="0.4"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/buttonBack"
+        app:layout_constraintTop_toBottomOf="@id/navigationBar"
         app:layout_constraintWidth_percent="0.6" />
 
     <EditText
         android:id="@+id/editTextName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="12dp"
         android:hint="Name"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.512"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/editTextLotNumber"
-        app:layout_constraintWidth_percent="0.6" />
-
-    <EditText
-        android:id="@+id/editTextPeriod"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:hint="Period"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.512"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/editTextCategory"
         app:layout_constraintWidth_percent="0.6" />
 
     <EditText
@@ -96,23 +89,38 @@
         android:layout_marginTop="12dp"
         android:hint="Category"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.512"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/editTextName"
         app:layout_constraintWidth_percent="0.6" />
+
+    <EditText
+        android:id="@+id/editTextPeriod"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:hint="Period"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/editTextCategory"
+        app:layout_constraintWidth_percent="0.6" />
+
+
 
     <Button
         android:id="@+id/buttonSearch"
         android:layout_width="wrap_content"
         android:layout_height="48dp"
-        android:layout_marginStart="240dp"
         android:layout_marginTop="12dp"
-        android:background="@color/buttonColor"
         android:text="Result"
         android:textColor="@android:color/white"
+        android:backgroundTint="@color/darkgrey"
+        tools:cornerRadius="5dp"
+
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@id/buttonView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.036"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/editTextPeriod" />
 
 
@@ -120,24 +128,26 @@
         android:id="@+id/buttonView"
         android:layout_width="wrap_content"
         android:layout_height="48dp"
-        android:layout_marginStart="85dp"
         android:layout_marginTop="12dp"
-        android:background="@color/buttonColor"
         android:text="View"
         android:textColor="@android:color/white"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        android:backgroundTint="@color/darkgrey"
+        tools:cornerRadius="5dp"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/buttonSearch"
         app:layout_constraintTop_toBottomOf="@id/editTextPeriod" />
 
     <TextView
         android:id="@+id/textViewResults"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="20dp"
         android:text="Results found"
+        android:textSize="20sp"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/buttonSearch" />
 
     <androidx.recyclerview.widget.RecyclerView
