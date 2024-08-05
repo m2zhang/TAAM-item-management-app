@@ -13,7 +13,6 @@ import android.widget.ProgressBar;
 import android.widget.Button;
 
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -104,7 +103,7 @@ public class GeneralUserHomeFragment extends Fragment implements OnItemSelectedL
         buttonAdmin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), LoginActivity.class);
+                Intent intent = new Intent(getActivity(), LoginActivityView.class);
                 startActivity(intent);
             }
         });
