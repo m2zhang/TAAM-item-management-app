@@ -99,7 +99,7 @@ public class SearchActivity extends AppCompatActivity implements OnItemSelectedL
 
         // Initialize item list and adapter
         itemList = new ArrayList<>();
-        itemAdapter = new ItemAdapter(itemList, this);
+        itemAdapter = new ItemAdapter(itemList, this, recyclerViewResults);
         recyclerViewResults.setLayoutManager(new LinearLayoutManager(this));
         recyclerViewResults.setAdapter(itemAdapter);
 

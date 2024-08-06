@@ -50,7 +50,7 @@ public class GeneralUserHomeFragment extends Fragment implements OnItemSelectedL
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         // Initialize and set adapter for RecyclerView
         itemList = new ArrayList<>();
-        itemAdapter = new ItemAdapter(itemList, this);
+        itemAdapter = new ItemAdapter(itemList, this, recyclerView);
 
         Button buttonAdmin = view.findViewById(R.id.buttonHome3);
 

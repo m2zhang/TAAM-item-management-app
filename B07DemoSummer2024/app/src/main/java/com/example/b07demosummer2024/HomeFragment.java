@@ -55,7 +55,7 @@ public class HomeFragment extends Fragment implements OnItemSelectedListener {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         // Initialize and set the adapter for RecyclerView
         itemList = new ArrayList<>();
-        itemAdapter = new ItemAdapter(itemList, this);
+        itemAdapter = new ItemAdapter(itemList, this, recyclerView);
 
         recyclerView.setAdapter(itemAdapter);
 

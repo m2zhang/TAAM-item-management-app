@@ -32,12 +32,15 @@ import java.util.List;
 public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder> {
     private List<Item> itemList;
     private GeneralUserHomeFragment fragment;
-    private int selectedPosition = -1; // No selection by default
+    private RecyclerView recyclerView;
+    private int selectedPosition = RecyclerView.NO_POSITION;
+    //private int selectedPosition = -1; // No selection by default
     private OnItemSelectedListener onItemSelectedListener;
 
-    public ItemAdapter(List<Item> itemList, OnItemSelectedListener onItemSelectedListener) {
+    public ItemAdapter(List<Item> itemList, OnItemSelectedListener onItemSelectedListener, RecyclerView recyclerView) {
         this.itemList = itemList;
         this.onItemSelectedListener = onItemSelectedListener;
+        this.recyclerView = recyclerView;
     }
 
     public ItemAdapter(List<Item> itemList, GeneralUserHomeFragment fragment) {
@@ -68,10 +71,19 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
                 int previousSelectedPosition = selectedPosition;
                 // Update the selected position
                 selectedPosition = holder.getAdapterPosition();
-                // Notify the adapter to refresh the list
                 // Notify the adapter to refresh only the updated items
-                notifyItemChanged(previousSelectedPosition);
-                notifyItemChanged(selectedPosition);
+                //notifyItemChanged(previousSelectedPosition);
+                // try to just change the holder.radioButtonSelect (checked = false)
+
+                if (previousSelectedPosition != RecyclerView.NO_POSITION) {
+                    // Uncheck the previous selected RadioButton
+                    ItemViewHolder previousHolder = (ItemViewHolder) recyclerView.findViewHolderForAdapterPosition(previousSelectedPosition);
+                    if (previousHolder != null) {
+                        previousHolder.radioButtonSelect.setChecked(false);
+                    }
+                }
+                //notifyItemChanged(selectedPosition);
+
                 if (onItemSelectedListener != null) {
                     onItemSelectedListener.onItemSelected(item);
                 }
